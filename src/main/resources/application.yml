@@ -1,0 +1,50 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: smtp
+
+  thymeleaf:
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+    prefix: classpath:templates
+    suffix: .html
+
+  datasource:
+    username: root
+    password: dlqhfka
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sseg
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+      properties:
+        hibernate:
+          user_sql_comments: true
+          format_sql: true
+          show_sql: true
+
+  mail:
+      host: smtp-relay.sendinblue.com
+      port: 587
+      username: sechan100@gmail.com
+      password: IS1UO7ErtXPMQzTf
+      properties:
+          mail:
+          smtp:
+              auth: true
+              starttls:
+              enable: true
+
+  output:
+    ansi:
+      enabled: always
+
+  devtools:
+    livereload:
+      enabled: true
+  freemarker:
+    :ache: false
