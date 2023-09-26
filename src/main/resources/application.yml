@@ -27,18 +27,6 @@ spring:
           format_sql: true
           show_sql: true
 
-  mail:
-      host: smtp-relay.sendinblue.com
-      port: 587
-      username: sechan100@gmail.com
-      password: IS1UO7ErtXPMQzTf
-      properties:
-          mail:
-          smtp:
-              auth: true
-              starttls:
-              enable: true
-
   output:
     ansi:
       enabled: always
