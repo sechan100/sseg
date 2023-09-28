@@ -1,4 +1,4 @@
-package com.sseg;
+package io.sseg.boundedContext.email;
 
 
 import lombok.Builder;

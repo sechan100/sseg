@@ -1,0 +1,11 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            clientId:
+            client-secret:
+          google:
+            clientId:
+            client-secret:
