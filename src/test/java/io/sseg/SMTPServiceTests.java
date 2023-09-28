@@ -1,4 +1,4 @@
-package com.sseg;
+package io.sseg;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

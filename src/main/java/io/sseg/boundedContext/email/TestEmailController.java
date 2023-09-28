@@ -1,4 +1,4 @@
-package com.sseg;
+package io.sseg.boundedContext.email;
 
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -6,22 +6,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Map;
-
 @Controller
 @RequiredArgsConstructor
-public class MainController {
+public class TestEmailController {
     
     private final EmailService emailService;
     
-    @GetMapping("/")
+    @GetMapping("/send")
     @ResponseBody
     public String index() {
 
         
         
         // 이메일 발송
-        EmailMsg emailMessage = EmailMsg.builder().to("yosechan100@gmail.com").subject("sseg test web email send").build();
+        EmailMsg emailMessage = EmailMsg.builder().to("sechan100@gmail.com").subject("sseg test web email send").build();
         try {
             
             emailService.sendEmailAuthenticationMail(emailMessage);
@@ -33,4 +31,19 @@ public class MainController {
         
         return "이메일 전송완료!";
     }
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -67,3 +67,9 @@ spring:
   devtools:
     livereload:
       enabled: true
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
