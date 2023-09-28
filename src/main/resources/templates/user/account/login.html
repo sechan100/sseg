@@ -1,16 +1,46 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" layout:decorate="~{/user/layout/layout.html}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>login</title>
 </head>
-<body>
-    <div>
-        <a th:href="@{/oauth2/authorization/goolge}">구글 로그인</a>
-        <a th:href="@{/oauth2/authorization/naver}">네이버 로그인</a>
+<main layout:fragment="main">
+    <div class="container mx-auto xl:px-96 mt-24">
+
+        <div class="flex justify-center mb-24">
+            <img th:src="@{/img/ssegTextLogo.png}" alt="">
+        </div>
+
+        <form th:action="@{/login}" method="POST" class="flex flex-col gap-6" onsubmit="LoginForm__submit(this); return false;">
+                <div class="form-control">
+                    <input type="text" name="username" placeholder="ID"
+                           class="input input-bordered" autofocus/>
+                </div>
+
+                <div class="form-control">
+                    <input type="password" name="password" placeholder="PASSWORD"
+                           class="input input-bordered"/>
+                </div>
+
+                <button type="submit" class="btn btn-primary gap-1 text-black">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    <span class="normal-case" th:text="login"></span>
+                </button>
+
+            <div class="flex justify-evenly">
+                <a href="/oauth2/authorization/naver" class="btn btn-outline">
+                    <i class="fa-solid fa-n text-[color:#2DB400]"></i>
+                </a>
+
+                <a href="/oauth2/authorization/google" class="btn btn-outline">
+                    <i class="fa-brands fa-google text-[color:#ff4000]"></i>
+                </a>
+            </div>
+            <div class="flex justify-evenly">
+                <a href="/register" class="btn btn-outline">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span class="normal-case" th:text="register"></span>
+                </a>
+            </div>
+        </form>
     </div>
-</body>
+</main>
 </html>

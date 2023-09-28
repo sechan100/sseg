@@ -19,10 +19,10 @@ public class TestEmailController {
         
         
         // 이메일 발송
-        EmailMsg emailMessage = EmailMsg.builder().to("sechan100@gmail.com").subject("sseg test web email send").build();
+        EmailRequest emailMessage = EmailRequest.builder().to("sechan100@gmail.com").subject("sseg test web email send").build();
         try {
             
-            emailService.sendEmailAuthenticationMail(emailMessage);
+            emailService.sendMail(emailMessage);
             
         } catch(MessagingException e) {
             throw new RuntimeException(e);

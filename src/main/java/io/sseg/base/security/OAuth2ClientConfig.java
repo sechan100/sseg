@@ -22,23 +22,23 @@ public class OAuth2ClientConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/loginPage").permitAll()
+                        .requestMatchers("/", "/login", "/register", "/error*").permitAll()
                         .anyRequest().authenticated()
                 )
                 
                 .formLogin(form -> form
-                        .loginPage("/loginPage")
+                        .loginPage("/login")
                 )
                 
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)
                         )
-                        .loginPage("/loginPage")
-                        .permitAll()
+                        .loginPage("/login")
                 )
                 
                 .logout(logout -> logout
+                        .logoutUrl("/logout")
                         .logoutSuccessUrl("/").permitAll()
                 );
         

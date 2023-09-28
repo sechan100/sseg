@@ -18,35 +18,23 @@ public class EmailService {
     private final JavaMailSender javaMailSender;
     private final SpringTemplateEngine templateEngine;
     
-    public void sendEmailAuthenticationMail(EmailMsg emailMessage) throws MessagingException {
+    public void sendMail(EmailRequest request) throws MessagingException {
         
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         
         
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
-            mimeMessageHelper.setTo(emailMessage.getTo()); // address
-            mimeMessageHelper.setSubject(emailMessage.getSubject()); // subject
+            mimeMessageHelper.setTo(request.getTo());
+            mimeMessageHelper.setSubject(request.getSubject());
+            mimeMessageHelper.setFrom(request.getFrom());
+            mimeMessageHelper.setText(request.getText(), true);
 //            mimeMessageHelper.setText(setContext(authKey, type), true); // html page
-            mimeMessageHelper.setText("""
-                    <!doctype html>
-                    <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport"
-                              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-                        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-                        <title>Document</title>
-                    </head>
-                    <body>
-                        <h1>안녕하세요</h1>
-                    </body>
-                    </html>    \s
-                    """, true); // html page
-            mimeMessageHelper.setFrom("sechan@sseg.io");
-            //
+            
+            // ### mail send ###
             javaMailSender.send(mimeMessageHelper.getMimeMessage());
             log.info("Success To Send Email!");
+            
             
         } catch (MessagingException e) {
             throw new MessagingException();

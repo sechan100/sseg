@@ -3,7 +3,7 @@ package io.sseg.boundedContext.user.auth.service;
 import io.sseg.boundedContext.user.auth.model.GoogleUser;
 import io.sseg.boundedContext.user.auth.model.NaverUser;
 import io.sseg.boundedContext.user.auth.model.ProviverUser;
-import io.sseg.boundedContext.user.service.AccountService;
+import io.sseg.boundedContext.user.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

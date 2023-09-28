@@ -1,4 +1,4 @@
-package io.sseg.boundedContext.user.entity;
+package io.sseg.boundedContext.user.account.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
