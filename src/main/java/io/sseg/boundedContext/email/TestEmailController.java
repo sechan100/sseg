@@ -17,7 +17,6 @@ public class TestEmailController {
     public String index() {
 
         
-        
         // 이메일 발송
         EmailRequest emailMessage = EmailRequest.builder().to("sechan100@gmail.com").subject("sseg test web email send").build();
         try {

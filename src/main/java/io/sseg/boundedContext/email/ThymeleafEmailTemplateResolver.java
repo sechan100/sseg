@@ -3,25 +3,26 @@ package io.sseg.boundedContext.email;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 
 import java.util.Map;
 
-@RequiredArgsConstructor
+@Component
 public class ThymeleafEmailTemplateResolver {
     
+    
     @Autowired
+    @Qualifier("htmlTemplateEngine")
     private TemplateEngine templateEngine;
     
-    private final String template;
-    private final Map<String, Object> variables;
     
     
-    
-    
-    public String resolve(){
+    public String resolve(String template, Map<String, Object> variables){
         
         Context context = new Context();
         
@@ -33,5 +34,4 @@ public class ThymeleafEmailTemplateResolver {
         
         return templateEngine.process(template, context);
     }
-    
 }
