@@ -1,4 +1,4 @@
-package io.sseg.boundedContext.email;
+package io.sseg.boundedContext.email.model;
 
 
 import lombok.*;

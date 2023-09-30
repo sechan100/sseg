@@ -1,9 +1,8 @@
-package io.sseg.boundedContext.user.auth.service;
+package io.sseg.boundedContext.user.account.service;
 
-import io.sseg.boundedContext.user.auth.model.GoogleUser;
-import io.sseg.boundedContext.user.auth.model.NaverUser;
-import io.sseg.boundedContext.user.auth.model.ProviverUser;
-import io.sseg.boundedContext.user.account.service.AccountService;
+import io.sseg.boundedContext.user.account.model.oauth.GoogleUser;
+import io.sseg.boundedContext.user.account.model.oauth.NaverUser;
+import io.sseg.boundedContext.user.account.model.oauth.ProviverUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

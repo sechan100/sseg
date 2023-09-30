@@ -1,5 +1,6 @@
-package io.sseg.boundedContext.email;
+package io.sseg.boundedContext.email.model;
 
+import io.sseg.boundedContext.email.EmailEnums;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package io.sseg.boundedContext.user.auth.model;
+package io.sseg.boundedContext.user.account.model.oauth;
 
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.user.OAuth2User;

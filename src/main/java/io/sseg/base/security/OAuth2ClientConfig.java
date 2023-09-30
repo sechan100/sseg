@@ -1,13 +1,13 @@
 package io.sseg.base.security;
 
-import io.sseg.boundedContext.user.auth.service.CustomOAuth2UserService;
+import io.sseg.boundedContext.user.account.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
@@ -22,7 +22,7 @@ public class OAuth2ClientConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/register", "/error*").permitAll()
+                        .requestMatchers("/", "/login", "/register", "/verify/email", "/error*").permitAll()
                         .anyRequest().authenticated()
                 )
                 
@@ -36,6 +36,8 @@ public class OAuth2ClientConfig {
                         )
                         .loginPage("/login")
                 )
+                
+                .csrf(AbstractHttpConfigurer::disable)
                 
                 .logout(logout -> logout
                         .logoutUrl("/logout")

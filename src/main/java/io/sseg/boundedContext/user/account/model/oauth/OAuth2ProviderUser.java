@@ -1,4 +1,4 @@
-package io.sseg.boundedContext.user.auth.model;
+package io.sseg.boundedContext.user.account.model.oauth;
 
 
 import org.springframework.security.core.GrantedAuthority;

@@ -1,9 +1,11 @@
-package io.sseg.boundedContext.email;
+package io.sseg.boundedContext.email.service;
 
+import io.sseg.boundedContext.email.model.EmailRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -13,12 +15,12 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class EmailService {
+public class EmailSendService {
     
     private final JavaMailSender javaMailSender;
-    private final SpringTemplateEngine templateEngine;
     
-    public void sendMail(EmailRequest request) throws MessagingException {
+    
+    public void sendMail(EmailRequest request) {
         
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         
@@ -37,7 +39,7 @@ public class EmailService {
             
             
         } catch (MessagingException e) {
-            throw new MessagingException();
+            log.info("Fail To Send Email!");
             
         } catch (MailException e) {
             log.info("Fail To Send Email For Authentication!");

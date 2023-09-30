@@ -1,12 +1,13 @@
 package io.sseg.boundedContext.email;
 
+import io.sseg.boundedContext.email.model.EmailRequest;
+import io.sseg.boundedContext.email.model.EmailResponse;
+import io.sseg.boundedContext.email.service.EmailSendService;
+import io.sseg.boundedContext.email.service.ThymeleafEmailTemplateResolver;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -16,7 +17,7 @@ import java.util.Map;
 @Slf4j
 public class EmailEndPoint {
     
-    private final EmailService emailService;
+    private final EmailSendService emailService;
     private final ThymeleafEmailTemplateResolver templateResolver;
     
     
@@ -35,7 +36,7 @@ public class EmailEndPoint {
         Map<String, Object> variables = Map.of("content", "테스트 이메일 입니다.");
         
         
-        String emailContent = templateResolver.resolve(template, variables);
+        String emailContent = templateResolver.resolveHtml(template, variables);
         
         EmailRequest request = EmailRequest.builder()
                 .from("sechan@sseg.io")
@@ -45,12 +46,7 @@ public class EmailEndPoint {
                 .build();
         
         
-        
-        try {
-            emailService.sendMail(request);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+        emailService.sendMail(request);
         
         
         EmailResponse response = EmailResponse.builder()

@@ -1,0 +1,7 @@
+custom:
+  email:
+    from:
+      email-verification: verify@sseg.io
+  site:
+    name: sseg
+    base-url: 'http://localhost:${server.port}'

@@ -1,4 +1,4 @@
-package io.sseg.boundedContext.user.auth.controller;
+package io.sseg.boundedContext.user.account.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

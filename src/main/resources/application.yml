@@ -1,15 +1,16 @@
 server:
   port: 8080
 
-custom:
-  site:
-    name: sseg
-    base-url: 'http://localhost:${server.port}'
-
 spring:
   profiles:
     active: smtp
-    include: oauth2
+    include:
+      - oauth2
+      - custom
+
+  redis:
+    host: localhost
+    port: 6379
 
   thymeleaf:
     cache: false
@@ -68,8 +69,8 @@ spring:
     livereload:
       enabled: true
 
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: DEBUG

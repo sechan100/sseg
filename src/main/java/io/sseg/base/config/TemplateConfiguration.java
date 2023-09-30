@@ -11,7 +11,7 @@ import org.thymeleaf.templateresolver.StringTemplateResolver;
 @Configuration
 public class TemplateConfiguration {
     
-    @Bean
+    @Bean(name = "htmlTemplateEngine")
     public TemplateEngine htmlTemplateEngine() {
         
         // 템플릿 리졸버 설정
@@ -25,4 +25,17 @@ public class TemplateConfiguration {
         
         return templateEngine;
     }
+    
+    @Bean(name = "basicTemplateEngine")
+    public TemplateEngine basicTemplateEngine(SpringResourceTemplateResolver templateResolver) {
+        
+        
+        // 템플릿 엔진 설정
+        TemplateEngine templateEngine = new TemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver);
+        
+        
+        return templateEngine;
+    }
+    
 }
