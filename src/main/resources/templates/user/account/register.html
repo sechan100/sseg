@@ -8,6 +8,7 @@
         <div class="lg:w-2/5 md:w-1/2 w-2/3">
             <form id="registerForm" th:action="@{/verify/email}" method="post" class="bg-white p-10 rounded-lg shadow-lg min-w-full">
                 <h1 class="text-center text-2xl mb-6 text-gray-600 font-bold font-sans">SSEG Register</h1>
+                <input type="hidden" name="provider" value="sseg" />
                 <div>
                     <label class="text-gray-800 font-semibold block my-3 text-md" for="username">아이디</label>
                     <input class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" type="text" name="username" id="username" placeholder="username" />

@@ -1,8 +1,12 @@
 package io.sseg.boundedContext.user.account.service;
 
-import io.sseg.boundedContext.user.account.model.oauth.GoogleUser;
-import io.sseg.boundedContext.user.account.model.oauth.NaverUser;
-import io.sseg.boundedContext.user.account.model.oauth.ProviverUser;
+import io.sseg.base.request.Rq;
+import io.sseg.boundedContext.user.account.model.dto.AccountDetailsRegisterForm;
+import io.sseg.boundedContext.user.account.model.dto.AwaitingEmailVerifyingRedisEntity;
+import io.sseg.boundedContext.user.account.model.oauthuser.GoogleUser;
+import io.sseg.boundedContext.user.account.model.oauthuser.NaverUser;
+import io.sseg.boundedContext.user.account.model.oauthuser.ProviderUser;
+import io.sseg.infra.Ut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -17,7 +21,8 @@ import org.springframework.stereotype.Service;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     
     private final AccountService accountService;
-    
+    private final AwaitingEmailVerifyingFormService emailCacheService;
+    private final Rq rq;
     
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -28,16 +33,30 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
         
         // social login provider 별로 인증객체를 분리하여 처리
-        ProviverUser proviverUser = providerUser(oAuth2User, clientRegistration);
+        ProviderUser proviverUser = providerUser(oAuth2User, clientRegistration);
+        AccountDetailsRegisterForm registerForm = new AccountDetailsRegisterForm(proviverUser);
         
-        accountService.register(proviverUser, userRequest);
+        
+        // 기존 로그인 정보가 있다면 회원정보를 업데이트하고 그대로 로그인 진행
+        if(accountService.isExistUsername(registerForm.getUsername())){
+            
+            accountService.updateAccountDetails(registerForm);
+            
+            
+        // 기존 로그인 정보가 없다면 기본 Account 정보가 포함된 AccountDetilasRegisterForm을 가지고 회원가입 진행
+        } else {
+            String authenticationCode = Ut.randomString();
+            emailCacheService.save(new AwaitingEmailVerifyingRedisEntity(registerForm, authenticationCode));
+            rq.redirect("/register?code=" + authenticationCode + "&email=" + registerForm.getEmail());
+        }
+        
         
         return oAuth2User;
     }
     
     
     // 표준화 되지 않은 OAtuh2User를 리소스서버별로 특화된 ProviderUser 구현체로 변환
-    private ProviverUser providerUser(OAuth2User oAuth2User, ClientRegistration clientRegistration) {
+    private ProviderUser providerUser(OAuth2User oAuth2User, ClientRegistration clientRegistration) {
         
         String registrationId = clientRegistration.getRegistrationId();
         

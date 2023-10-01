@@ -7,6 +7,7 @@ import io.sseg.boundedContext.user.account.model.dto.AccountDetailsRegisterForm;
 import io.sseg.boundedContext.user.account.model.dto.VerifyRequestRegisterForm;
 import io.sseg.boundedContext.user.account.repository.AwaitingEmailVerifyingFormRepository;
 import io.sseg.boundedContext.user.account.service.AccountService;
+import io.sseg.boundedContext.user.account.service.AwaitingEmailVerifyingFormService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class RegisterController {
     
     private final Rq rq;
     private final AccountService accountService;
-    private final AwaitingEmailVerifyingFormRepository emailCacheRepository;
+    private final AwaitingEmailVerifyingFormService awaitingEmailVerifyingFormService;
     
     
     
@@ -32,7 +34,7 @@ public class RegisterController {
             Model model
     ) {
         if(code != null && email != null){
-            AwaitingEmailVerifyingRedisEntity verifiedForm = emailCacheRepository.findById(email).orElseThrow();
+            AwaitingEmailVerifyingRedisEntity verifiedForm = awaitingEmailVerifyingFormService.findById(email);
             AccountDetailsRegisterForm form = new AccountDetailsRegisterForm(verifiedForm);
             model.addAttribute("registerForm", form);
             return "/user/account/verified_register";
@@ -52,7 +54,7 @@ public class RegisterController {
         }
         
         // 기존에 이메일 인증 요청을 보낸 기록이 있는지 확인
-        boolean isExistInCache = emailCacheRepository.existsById(form.getEmail());
+        boolean isExistInCache = awaitingEmailVerifyingFormService.existsById(form.getEmail());
         
         
         String authCode;
@@ -60,7 +62,7 @@ public class RegisterController {
         
         // 기존에 발급한 이메일 인증코드가 있는지 확인하여 있는 경우, 기존 인증코드를 캐쉬에서 불러오기
         if(isExistInCache){
-            authCode = emailCacheRepository.findById(form.getEmail()).orElseThrow().getAuthenticationCode();
+            authCode = awaitingEmailVerifyingFormService.findById(form.getEmail()).getAuthenticationCode();
         } else {
             authCode = null;
         }
@@ -73,7 +75,7 @@ public class RegisterController {
         
         if(!isExistInCache) {
             // redis 캐쉬에 회원가입 정보 임시저장
-            emailCacheRepository.save(new AwaitingEmailVerifyingRedisEntity(form, authCode));
+            awaitingEmailVerifyingFormService.save(new AwaitingEmailVerifyingRedisEntity(form, authCode));
         }
         
         return "/user/account/email_verification_waiting";
@@ -81,14 +83,15 @@ public class RegisterController {
     
     
     @PostMapping("/register")
+    @ResponseBody
     public String register(AccountDetailsRegisterForm form){
         
-        // form 유효성 검사
-        // 나중에 하자..
+        // form 유효성 검사 나중에 구현하자..
+        
+        accountService.register(form);
         
         
         
-        
-        return null;
+        return rq.alert("회원가입이 완료되었습니다.", "/login");
     }
 }

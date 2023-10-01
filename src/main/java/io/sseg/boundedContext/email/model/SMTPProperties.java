@@ -1,8 +1,10 @@
 package io.sseg.boundedContext.email.model;
 
+import jakarta.persistence.Embeddable;
 import lombok.Data;
 
 @Data
+@Embeddable
 public class SMTPProperties {
     
     private String host;

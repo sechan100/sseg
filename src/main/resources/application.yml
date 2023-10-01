@@ -41,13 +41,13 @@ spring:
 
           naver:
             scope: profile,email
-            client-name: Naver
+            client-name: naver
             authorization-grant-type: authorization_code
             redirect-uri: '${custom.site.base-url}/login/oauth2/code/naver'
 
           google:
             scope: profile, email
-            client-name: Google
+            client-name: google
             authorization-grant-type: authorization_code
             redirect-uri: '${custom.site.base-url}/login/oauth2/code/google'
 

@@ -10,7 +10,9 @@
         <h1 class="text-center text-2xl mb-6 text-gray-600 font-bold font-sans">SSEG Register</h1>
 
         <!-- 소셜 로그인 타입 -->
-        <input type="hidden" th:field="*{socialType}" />
+        <input type="hidden" th:field="*{provider}" />
+        <input type="hidden" th:field="*{username}" />
+        <input type="hidden" th:field="*{password}" />
 
         <!-- 이메일 -->
         <div>
@@ -56,59 +58,6 @@
       </form>
     </div>
   </div>
-
-  <script th:inline="javascript">
-    $(document).ready(function () {
-        $('#registerForm').submit(function (form) {
-            registerFormSubmit(form);
-        });
-    });
-
-
-    function registerFormSubmit(event) {
-        event.preventDefault();
-
-        var form = $(event.target);
-
-        var username = form.find("[name='username']");
-        var password = form.find("[name='password']");
-        var passwordConfirm = form.find("[name='passwordConfirm']");
-
-        username.val($.trim(username.val()));
-
-        if (username.val().length === 0) {
-            alert('아이디를 입력해주세요.');
-            username.focus();
-            return;
-        }
-
-        if (username.val().length < 4) {
-            alert('최소 아이디 길이는 5자리 입니다.');
-            username.focus();
-            return;
-        }
-
-        password.val($.trim(password.val()));
-
-        if (password.val().length === 0) {
-            password.focus();
-            alert('비밀번호를 입력해주세요.');
-            return;
-        }
-
-        passwordConfirm.val($.trim(passwordConfirm.val()));
-
-        if (password.val() != passwordConfirm.val()) {
-            alert('비밀번호 확인이 일치하지 않습니다.');
-            passwordConfirm.focus();
-            return;
-        }
-
-        form.get(0).submit();
-
-    }
-
-  </script>
 
 </main>
 </html>

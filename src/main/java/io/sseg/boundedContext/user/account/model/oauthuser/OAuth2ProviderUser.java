@@ -1,4 +1,4 @@
-package io.sseg.boundedContext.user.account.model.oauth;
+package io.sseg.boundedContext.user.account.model.oauthuser;
 
 
 import org.springframework.security.core.GrantedAuthority;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public abstract class OAuth2ProviderUser implements ProviverUser {
+public abstract class OAuth2ProviderUser implements ProviderUser {
     
     private OAuth2User oAuth2User;
     private ClientRegistration clientRegistration;

@@ -5,13 +5,16 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
+import java.io.IOException;
 
 
 @Component
 @RequestScope
+@Slf4j
 public class Rq {
     
     private HttpServletRequest request;
@@ -50,4 +53,11 @@ public class Rq {
         return "<script>alert('" + msg + "'); history.back();</script>";
     }
     
+    public void redirect(String redirectUrl) {
+        try{
+            response.sendRedirect(redirectUrl);
+        } catch(IOException e){
+            log.info("fail to redirect: bean of Rq.java redirect() method");
+        }
+    }
 }
