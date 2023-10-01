@@ -26,33 +26,6 @@
           <input th:field="*{nickname}" type="text" placeholder="nickname" class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" />
         </div>
 
-        <!-- SMTP 서버 설정 -->
-        <div>
-
-          <h2>SMTP 서버 설정</h2>
-
-          <div>
-            <label class="text-gray-800 font-semibold block my-3 text-md" for="host">host</label>
-            <input th:field="*{smtpProperties.host}" type="text" placeholder="host" class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" />
-          </div>
-
-          <div>
-            <label class="text-gray-800 font-semibold block my-3 text-md" for="port">port</label>
-            <input th:field="*{smtpProperties.port}" type="text" placeholder="port" class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" />
-          </div>
-
-          <div>
-            <label class="text-gray-800 font-semibold block my-3 text-md" for="username">username</label>
-            <input th:field="*{smtpProperties.username}" type="text" placeholder="username" class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" />
-          </div>
-
-          <div>
-            <label class="text-gray-800 font-semibold block my-3 text-md" for="password">password</label>
-            <input th:field="*{smtpProperties.password}" type="text" placeholder="password" class="w-full bg-gray-100 px-4 py-2 rounded-lg focus:outline-none" />
-          </div>
-
-        </div>
-
         <button type="submit" class="w-full mt-6 bg-indigo-600 rounded-lg px-4 py-2 text-lg text-white tracking-wide font-semibold font-sans">이메일 인증하고 가입하기</button>
         <button type="button" class="w-full mt-6 mb-3 bg-indigo-100 rounded-lg px-4 py-2 text-lg text-gray-800 tracking-wide font-semibold font-sans">Login</button>
       </form>

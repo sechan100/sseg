@@ -1,6 +1,6 @@
 package io.sseg.base.security;
 
-import io.sseg.boundedContext.user.account.service.CustomOAuth2UserService;
+import io.sseg.boundedcontext.user.account.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
