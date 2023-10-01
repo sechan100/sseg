@@ -102,7 +102,7 @@ public class AccountService {
     }
     
     @Transactional
-    public void updateAccountDto(AccountDto registerForm) {
+    public Account updateAccountDto(AccountDto registerForm) {
             
             Account account = accountRepository.findByUsernameAndProvider(registerForm.getUsername(), registerForm.getProvider());
             account.setUsername(registerForm.getUsername());
@@ -110,7 +110,7 @@ public class AccountService {
             account.setProvider(registerForm.getProvider());
             account.setEmail(registerForm.getEmail());
             
-            accountRepository.save(account);
+            return accountRepository.save(account);
     }
     
     

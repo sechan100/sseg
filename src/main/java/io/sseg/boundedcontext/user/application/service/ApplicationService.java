@@ -1,11 +1,12 @@
 package io.sseg.boundedcontext.user.application.service;
 
+import io.sseg.boundedcontext.user.application.entity.Application;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-@Service
-public class ApplicationService {
-
-
-
+public interface ApplicationService {
+    
+    List<Application> showMyApplications();
+    
+    
 }

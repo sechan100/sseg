@@ -1,10 +1,12 @@
 package io.sseg.boundedcontext.user.account.service;
 
 import io.sseg.base.request.Rq;
+import io.sseg.boundedcontext.user.account.entity.Account;
 import io.sseg.boundedcontext.user.account.model.dto.AccountDetailsRegisterForm;
 import io.sseg.boundedcontext.user.account.model.dto.AwaitingEmailVerifyingRedisEntity;
 import io.sseg.boundedcontext.user.account.model.oauthuser.GoogleUser;
 import io.sseg.boundedcontext.user.account.model.oauthuser.NaverUser;
+import io.sseg.boundedcontext.user.account.model.oauthuser.PrincipalContext;
 import io.sseg.boundedcontext.user.account.model.oauthuser.ProviderUser;
 import io.sseg.infra.Ut;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -25,7 +28,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private final Rq rq;
     
     @Override
-    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+    public PrincipalContext loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         
         ClientRegistration clientRegistration = userRequest.getClientRegistration();
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
@@ -39,17 +42,17 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         
         // 기존 로그인 정보가 있다면 회원정보를 업데이트하고 그대로 로그인 진행
         if(accountService.existsByUsernameAndProvider(registerForm.getUsername(), registerForm.getProvider())){
-            accountService.updateAccountDto(registerForm);
             
-        // 기존 로그인 정보가 없다면 기본 Account 정보가 포함된 AccountDetilasRegisterForm을 가지고 회원가입 진행
+            Account refrashedAccount = accountService.updateAccountDto(registerForm);
+            return new PrincipalContext(refrashedAccount);
+            
+        // 기존 로그인 정보가 없다면 기본 Account 정보가 포함된 AccountDetilasRegisterForm을 redis에 저장하고 리다이렉트
         } else {
             String authenticationCode = Ut.randomString();
             emailCacheService.save(new AwaitingEmailVerifyingRedisEntity(registerForm, authenticationCode));
             rq.redirect("/register?code=" + authenticationCode + "&email=" + registerForm.getEmail());
+            return null;
         }
-        
-        
-        return oAuth2User;
     }
     
     

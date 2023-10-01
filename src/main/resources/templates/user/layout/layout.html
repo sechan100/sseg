@@ -44,7 +44,7 @@
                         <li><a th:href="@{/register}">회원가입</a></li>
                         <li sec:authorize="isAuthenticated()">
                             <details class="relative">
-                                <summary th:text="username"></summary>
+                                <summary th:text="${@rq.user.nickname}"></summary>
                                 <ul class="menu dropdown dropdown-hover bg-base-200 w-56 rounded-box absolute -left-32">
                                     <li>
                                         <a>
