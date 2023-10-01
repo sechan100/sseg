@@ -5,7 +5,6 @@ import io.sseg.base.request.Rq;
 import io.sseg.boundedContext.user.account.model.dto.AwaitingEmailVerifyingRedisEntity;
 import io.sseg.boundedContext.user.account.model.dto.AccountDetailsRegisterForm;
 import io.sseg.boundedContext.user.account.model.dto.VerifyRequestRegisterForm;
-import io.sseg.boundedContext.user.account.repository.AwaitingEmailVerifyingFormRepository;
 import io.sseg.boundedContext.user.account.service.AccountService;
 import io.sseg.boundedContext.user.account.service.AwaitingEmailVerifyingFormService;
 import lombok.RequiredArgsConstructor;
@@ -49,9 +48,7 @@ public class RegisterController {
     public String verifyEmail(VerifyRequestRegisterForm form) {
         
         // form 유효성 검사
-        if(!accountService.validate(form)){
-            throw new IllegalArgumentException("유효하지 않은 입력값입니다.");
-        }
+        accountService.validate(form);
         
         // 기존에 이메일 인증 요청을 보낸 기록이 있는지 확인
         boolean isExistInCache = awaitingEmailVerifyingFormService.existsById(form.getEmail());

@@ -7,6 +7,7 @@ import io.sseg.boundedContext.email.service.ThymeleafEmailTemplateResolver;
 import io.sseg.boundedContext.user.account.entity.Account;
 import io.sseg.boundedContext.user.account.exception.RegistrationException;
 import io.sseg.boundedContext.user.account.model.dto.AccountDetailsRegisterForm;
+import io.sseg.boundedContext.user.account.model.dto.AccountDto;
 import io.sseg.boundedContext.user.account.model.dto.VerifyRequestRegisterForm;
 import io.sseg.boundedContext.user.account.repository.AccountRepository;
 import io.sseg.boundedContext.user.account.repository.AwaitingEmailVerifyingFormRepository;
@@ -60,10 +61,13 @@ public class AccountService {
         }
     }
     
-    public boolean validate(VerifyRequestRegisterForm form){
+    
+    // VerifyRequestRegisterForm의 아이디, 비밀번호, 이메일등의 중복 검사.
+    // provider가 다른 경우, 같은 이메일, 아이디라도 다른 계정으로 판단한다.
+    public void validate(VerifyRequestRegisterForm form){
         
         // username 중복 검사
-        if(isExistUsername(form.getUsername())){
+        if(existsByUsernameAndProvider(form.getUsername(), form.getProvider())){
             throw new RegistrationException(RegistrationException.USERNAME_DUPLICATION);
         }
         
@@ -73,24 +77,11 @@ public class AccountService {
         }
         
         // email 중복 검사
-        if(isExistEmail(form.getEmail())){
+        if(existsByEmailAndProvider(form.getEmail(), form.getProvider())){
             throw new RegistrationException(RegistrationException.EMAIL_DUPLICATION);
         }
-        
-        return true;
     }
     
-    public Account findByUsername(String username) {
-        return accountRepository.findByUsername(username);
-    }
-    
-    public boolean isExistUsername(String username) {
-        return accountRepository.findByUsername(username) != null;
-    }
-    
-    public boolean isExistEmail(String email) {
-        return accountRepository.findByEmail(email) != null;
-    }
     
     public String sendEmailVerifyingEmail(String toEmail, String authCode) {
         
@@ -112,17 +103,40 @@ public class AccountService {
     }
     
     @Transactional
-    public void updateAccountDetails(AccountDetailsRegisterForm registerForm) {
+    public void updateAccountDto(AccountDto registerForm) {
             
             Account account = accountRepository.findByUsernameAndProvider(registerForm.getUsername(), registerForm.getProvider());
             account.setUsername(registerForm.getUsername());
             account.setPassword(passwordEncoder.encode(registerForm.getPassword()));
-            account.setRole(registerForm.getRole());
             account.setProvider(registerForm.getProvider());
             account.setEmail(registerForm.getEmail());
-            account.setNickname(registerForm.getNickname());
-            account.setSmtpProperties(registerForm.getSmtpProperties());
             
             accountRepository.save(account);
+    }
+    
+    
+    
+    
+    
+    
+    
+    // ****************************************************
+    // *********     JPA Repository service      **********
+    // ****************************************************
+    
+    public Account findByUsername(String username) {
+        return accountRepository.findByUsername(username);
+    }
+    
+    private boolean isExistUsername(String username) {
+        return accountRepository.existsByUsername(username);
+    }
+    
+    public boolean existsByUsernameAndProvider(String username, String provider) {
+        return accountRepository.existsByUsernameAndProvider(username, provider);
+    }
+    
+    public boolean existsByEmailAndProvider(String email, String provider) {
+        return accountRepository.existsByEmailAndProvider(email, provider);
     }
 }

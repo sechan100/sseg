@@ -4,7 +4,7 @@ package io.sseg.boundedContext.user.account.model.dto;
 import io.sseg.boundedContext.email.model.SMTPProperties;
 import io.sseg.boundedContext.user.account.model.oauthuser.ProviderUser;
 import io.sseg.infra.Role;
-import io.sseg.infra.SocialType;
+import io.sseg.infra.ProviderType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,7 +20,7 @@ public class AccountDetailsRegisterForm extends DefaultAccountDto {
     
     
     public AccountDetailsRegisterForm(){
-         provider = SocialType.NATIVE;
+         provider = ProviderType.NATIVE;
     }
     
     public AccountDetailsRegisterForm(ProviderUser form){

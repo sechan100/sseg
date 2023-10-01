@@ -1,6 +1,6 @@
 package io.sseg.infra;
 
-public class SocialType {
+public class ProviderType {
     
     public static final String NATIVE = "sseg";
     public static final String GOOGLE = "google";
@@ -9,6 +9,6 @@ public class SocialType {
     public static final String GITHUB = "github";
     
     
-    SocialType(String name){
+    ProviderType(String name){
     }
 }

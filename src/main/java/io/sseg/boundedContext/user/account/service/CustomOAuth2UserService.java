@@ -38,10 +38,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         
         
         // 기존 로그인 정보가 있다면 회원정보를 업데이트하고 그대로 로그인 진행
-        if(accountService.isExistUsername(registerForm.getUsername())){
-            
-            accountService.updateAccountDetails(registerForm);
-            
+        if(accountService.existsByUsernameAndProvider(registerForm.getUsername(), registerForm.getProvider())){
+            accountService.updateAccountDto(registerForm);
             
         // 기존 로그인 정보가 없다면 기본 Account 정보가 포함된 AccountDetilasRegisterForm을 가지고 회원가입 진행
         } else {
