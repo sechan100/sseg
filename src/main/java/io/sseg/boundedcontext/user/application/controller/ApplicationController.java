@@ -17,7 +17,7 @@ public class ApplicationController {
     @GetMapping("/application/{applicationId}")
     public String application(@PathVariable Long applicationId){
         
-        rq.ownerShipCheck(applicationId, Application.class);
+        rq.isAccessAllowed(applicationId, Application.class);
         
         
         
