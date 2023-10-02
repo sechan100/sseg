@@ -1,6 +1,7 @@
 package io.sseg.base.security;
 
 import io.sseg.boundedcontext.user.service.CustomOAuth2UserService;
+import io.sseg.boundedcontext.user.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class OAuth2ClientConfig {
     
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomUserDetailsService customUserDetailsService;
     
     
     @Bean
@@ -55,7 +57,6 @@ public class OAuth2ClientConfig {
     WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/css/**", "/js/**", "/img/**");
     }
-    
-    
+ 
     
 }

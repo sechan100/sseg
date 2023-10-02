@@ -66,7 +66,7 @@ public class AccountService {
     public void validate(VerifyRequestRegisterForm form){
         
         // username 중복 검사
-        if(existsByUsernameAndProvider(form.getUsername(), form.getProvider())){
+        if(existsByUsername(form.getUsername(), form.getProvider())){
             throw new RegistrationException(RegistrationException.USERNAME_DUPLICATION);
         }
         
@@ -104,7 +104,7 @@ public class AccountService {
     @Transactional
     public Account updateAccountDto(AccountDto registerForm) {
             
-            Account account = accountRepository.findByUsernameAndProvider(registerForm.getUsername(), registerForm.getProvider());
+            Account account = accountRepository.findByUsername(registerForm.getUsername());
             account.setUsername(registerForm.getUsername());
             account.setPassword(passwordEncoder.encode(registerForm.getPassword()));
             account.setProvider(registerForm.getProvider());
@@ -131,8 +131,8 @@ public class AccountService {
         return accountRepository.existsByUsername(username);
     }
     
-    public boolean existsByUsernameAndProvider(String username, String provider) {
-        return accountRepository.existsByUsernameAndProvider(username, provider);
+    public boolean existsByUsername(String username, String provider) {
+        return accountRepository.existsByUsername(username);
     }
     
     public boolean existsByEmailAndProvider(String email, String provider) {

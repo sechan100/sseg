@@ -41,3 +41,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// flush redis
+tasks.register('flushRedis', Exec) {
+	commandLine 'redis-cli', 'flushall'
+}

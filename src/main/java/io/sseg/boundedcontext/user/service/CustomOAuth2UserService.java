@@ -40,7 +40,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         
         
         // 기존 로그인 정보가 있다면 회원정보를 업데이트하고 그대로 로그인 진행
-        if(accountService.existsByUsernameAndProvider(registerForm.getUsername(), registerForm.getProvider())){
+        if(accountService.existsByUsername(registerForm.getUsername(), registerForm.getProvider())){
             
             Account refrashedAccount = accountService.updateAccountDto(registerForm);
             return new PrincipalContext(refrashedAccount);

@@ -22,4 +22,8 @@ public class AwaitingEmailVerifyingFormService {
     public AwaitingEmailVerifyingRedisEntity findById(String email) {
         return emailCacheRepository.findById(email).orElseThrow();
     }
+    
+    public void delete(String email) {
+        emailCacheRepository.deleteById(email);
+    }
 }
