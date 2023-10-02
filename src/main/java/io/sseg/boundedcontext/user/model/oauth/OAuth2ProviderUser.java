@@ -12,8 +12,8 @@ import java.util.UUID;
 
 public abstract class OAuth2ProviderUser implements ProviderUser {
     
-    private OAuth2User oAuth2User;
-    private ClientRegistration clientRegistration;
+    private final OAuth2User oAuth2User;
+    private final ClientRegistration clientRegistration;
     private final Map<String, Object> attributes;
     
     public OAuth2ProviderUser(Map<String, Object> attributes, OAuth2User oAuth2User, ClientRegistration clientRegistration) {
