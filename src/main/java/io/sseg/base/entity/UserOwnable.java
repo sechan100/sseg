@@ -1,6 +1,6 @@
 package io.sseg.base.entity;
 
-import io.sseg.boundedcontext.user.account.entity.Account;
+import io.sseg.boundedcontext.user.entity.Account;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <style>
@@ -27,7 +26,7 @@
     <!--  daisyui  -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@3.8.1/dist/full.css" rel="stylesheet" type="text/css" />
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100" th:with="user = ${@rq.user}">
 
 <div class="min-h-screen flex flex-col pb-10">
     <header layout:fragment="header">
@@ -42,7 +41,7 @@
                     <ul class="menu menu-horizontal px-1">
                         <li><a th:href="@{/login}">로그인</a></li>
                         <li><a th:href="@{/register}">회원가입</a></li>
-                        <li sec:authorize="isAuthenticated()">
+                        <li th:if="${user.login}">
                             <details class="relative">
                                 <summary th:text="${@rq.user.nickname}"></summary>
                                 <ul class="menu dropdown dropdown-hover bg-base-200 w-56 rounded-box absolute -left-32">
