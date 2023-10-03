@@ -1,5 +1,7 @@
 package io.sseg.infra.ioc;
 
+import io.sseg.base.request.Rq;
+import io.sseg.boundedcontext.user.model.dto.AccountPrincipal;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -17,5 +19,9 @@ public class SpringContext implements ApplicationContextAware {
 
     public static <T> T getBean(Class<T> beanClass) {
         return context.getBean(beanClass);
+    }
+    
+    public static AccountPrincipal getAccountPrincipal(){
+        return getBean(Rq.class).getAccountPrincipal();
     }
 }

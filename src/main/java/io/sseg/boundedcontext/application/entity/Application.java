@@ -10,12 +10,14 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Application extends UserOwnable {
     
-    private String jwtToken;
-    
     private String name;
+    
+    private String jwtToken;
     
     private String description;
     

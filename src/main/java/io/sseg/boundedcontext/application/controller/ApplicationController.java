@@ -25,9 +25,7 @@ public class ApplicationController {
     @PostMapping("/application/create")
     public String createApplication(@Valid ApplicationDto applicationRegistrationForm){
         
-        
-        // form 유효성 검사(아이디 중복 검사, null 체크 등)
-        
+        applicationService.create(applicationRegistrationForm);
         
         return "";
     }
@@ -37,7 +35,7 @@ public class ApplicationController {
     @GetMapping("/application")
     public String showApplicationList(Model model){
         
-        List<Application> applications = applicationService.findAllByOwnerId(rq.getUser().getId());
+        List<Application> applications = applicationService.findAllByOwnerId(rq.getAccountPrincipal().getId());
         
         model.addAttribute("applications", applications);
         

@@ -2,7 +2,7 @@ package io.sseg.base.request;
 
 import io.sseg.base.entity.UserOwnable;
 import io.sseg.boundedcontext.user.entity.Account;
-import io.sseg.boundedcontext.user.model.dto.PrincipalAccountDto;
+import io.sseg.boundedcontext.user.model.dto.AccountPrincipal;
 import io.sseg.boundedcontext.user.model.oauth.PrincipalContext;
 import io.sseg.boundedcontext.user.service.AccountService;
 import io.sseg.base.security.util.Role;
@@ -38,7 +38,7 @@ public class Rq {
     private final HttpServletRequest request;
     private final HttpServletResponse response;
     private final HttpSession session;
-    private final PrincipalAccountDto user;
+    private final AccountPrincipal accountPrincipal;
     
     
     public Rq(HttpServletRequest req, HttpServletResponse resp, HttpSession session, ApplicationContext context, AccountService accountService) {
@@ -52,34 +52,34 @@ public class Rq {
         
         if(authentication instanceof UsernamePasswordAuthenticationToken) {
             
-            PrincipalAccountDto user = ((PrincipalContext)authentication.getPrincipal()).getAccount();
+            AccountPrincipal user = ((PrincipalContext)authentication.getPrincipal()).getAccount();
             user.setLogin(true);
-            this.user = user;
+            this.accountPrincipal = user;
             
         } else if(authentication instanceof OAuth2AuthenticationToken) {
             
-            PrincipalAccountDto user = ((PrincipalContext)authentication.getPrincipal()).getAccount();
+            AccountPrincipal user = ((PrincipalContext)authentication.getPrincipal()).getAccount();
             String nickname = user.getNickname();
             
             // OAuth를 이용해서 신규로 가입하는 사용자인 경우
             if(nickname == null){
                 
-                this.user = new PrincipalAccountDto(Account.builder().username("anonymous").nickname("anonymous").role(Role.ANONYMOUS).build());
+                this.accountPrincipal = new AccountPrincipal(Account.builder().username("anonymous").nickname("anonymous").role(Role.ANONYMOUS).build());
                 
                 
             // OAuth를 통한 로그인인 경우
             } else {
                 user.setLogin(true);
-                this.user = user;
+                this.accountPrincipal = user;
             }
             
         } else if(authentication instanceof AnonymousAuthenticationToken) {
             
-            this.user = new PrincipalAccountDto(Account.builder().username("anonymous").nickname("anonymous").role(Role.ANONYMOUS).build());
+            this.accountPrincipal = new AccountPrincipal(Account.builder().username("anonymous").nickname("anonymous").role(Role.ANONYMOUS).build());
             
         } else {
             
-            this.user = null;
+            this.accountPrincipal = null;
             
         }
     }
@@ -139,8 +139,8 @@ public class Rq {
         
         if (targetEntity.getOwner() != null) {
             
-            boolean isUserOwner = Objects.equals(targetEntity.getOwner().getId(), this.user.getId());
-            boolean isAdmin = this.user.isAdmin();
+            boolean isUserOwner = Objects.equals(targetEntity.getOwner().getId(), this.accountPrincipal.getId());
+            boolean isAdmin = this.accountPrincipal.isAdmin();
             
             if(!isUserOwner || !isAdmin){
                 throw new AccessDeniedException("접근권한이 없습니다.");

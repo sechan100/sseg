@@ -5,7 +5,7 @@ import io.sseg.base.security.util.Role;
 import lombok.Data;
 
 @Data
-public class PrincipalAccountDto {
+public class AccountPrincipal {
     
     private Long id;
     private String username;
@@ -16,7 +16,7 @@ public class PrincipalAccountDto {
     private boolean admin = false;
     
     
-    public PrincipalAccountDto(Account account){
+    public AccountPrincipal(Account account){
         
         this.id = account.getId();
         this.username = account.getUsername();
