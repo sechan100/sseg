@@ -1,7 +1,7 @@
 package io.sseg.boundedcontext.application.model;
 
-import io.sseg.boundedcontext.email.model.SMTPProperties;
-import io.sseg.boundedcontext.user.entity.Account;
+import io.sseg.boundedcontext.application.entity.SMTPProperties;
+import io.sseg.boundedcontext.user.model.dto.AccountPrincipal;
 
 public interface ApplicationDto {
     
@@ -11,7 +11,7 @@ public interface ApplicationDto {
     
     String getDomain();
     
-    Account getOwner();
+    AccountPrincipal getOwner();
     
     SMTPProperties getSmtpProperties();
 }

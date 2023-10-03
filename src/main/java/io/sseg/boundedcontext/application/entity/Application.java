@@ -2,22 +2,20 @@ package io.sseg.boundedcontext.application.entity;
 
 
 import io.sseg.base.entity.UserOwnable;
-import io.sseg.boundedcontext.email.model.SMTPProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 public class Application extends UserOwnable {
     
     private String name;
-    
-    private String jwtToken;
     
     private String description;
     

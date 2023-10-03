@@ -1,8 +1,7 @@
 package io.sseg.boundedcontext.application.model;
 
-import io.sseg.boundedcontext.email.model.SMTPProperties;
+import io.sseg.boundedcontext.application.entity.SMTPProperties;
 import io.sseg.boundedcontext.user.model.dto.AccountPrincipal;
-import io.sseg.infra.ioc.SpringContext;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -24,8 +23,7 @@ public class ApplicationRegistrationDto implements ApplicationDto {
     @Setter
     private String domain;
     
-    @NotNull
-    private AccountPrincipal owner = SpringContext.getAccountPrincipal();
+    private AccountPrincipal owner;
     
     @Valid
     @Setter

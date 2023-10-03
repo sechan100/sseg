@@ -1,9 +1,11 @@
 package io.sseg.boundedcontext.application.controller;
 
 
+import io.sseg.base.jwt.JwtUtil;
 import io.sseg.base.request.Rq;
 import io.sseg.boundedcontext.application.entity.Application;
 import io.sseg.boundedcontext.application.model.ApplicationDto;
+import io.sseg.boundedcontext.application.model.ApplicationRegistrationDto;
 import io.sseg.boundedcontext.application.service.ApplicationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -20,14 +23,19 @@ import java.util.List;
 public class ApplicationController {
     
     private final Rq rq;
+    private final JwtUtil jwtUtil;
     private final ApplicationService applicationService;
     
     @PostMapping("/application/create")
-    public String createApplication(@Valid ApplicationDto applicationRegistrationForm){
+    @ResponseBody
+    public String createApplication(@Valid ApplicationRegistrationDto applicationRegistrationForm){
         
-        applicationService.create(applicationRegistrationForm);
+        Long applicationId = applicationService.create(applicationRegistrationForm);
         
-        return "";
+        String jwtToken = jwtUtil.generateToken(applicationId);
+        
+        
+        return jwtToken;
     }
     
     

@@ -39,6 +39,7 @@ public class Rq {
     private final HttpServletResponse response;
     private final HttpSession session;
     private final AccountPrincipal accountPrincipal;
+    private final AccountService accountService;
     
     
     public Rq(HttpServletRequest req, HttpServletResponse resp, HttpSession session, ApplicationContext context, AccountService accountService) {
@@ -46,6 +47,7 @@ public class Rq {
         this.response = resp;
         this.session = session;
         this.context = context;
+        this.accountService = accountService;
         
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
@@ -152,4 +154,8 @@ public class Rq {
         
     }
     
+    
+    public Account getAccount() {
+        return accountService.findByUsername(accountPrincipal.getUsername());
+    }
 }
