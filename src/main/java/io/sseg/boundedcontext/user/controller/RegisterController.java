@@ -7,6 +7,7 @@ import io.sseg.boundedcontext.user.model.dto.AwaitingEmailVerifyingRedisEntity;
 import io.sseg.boundedcontext.user.service.AccountService;
 import io.sseg.boundedcontext.user.service.AwaitingEmailVerifyingFormService;
 import io.sseg.boundedcontext.user.model.dto.VerifyRequestRegisterForm;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
@@ -45,7 +46,7 @@ public class RegisterController {
     
     
     @PostMapping("/verify/email")
-    public String verifyEmail(VerifyRequestRegisterForm form) {
+    public String verifyEmail(@Valid VerifyRequestRegisterForm form) {
         
         // form 유효성 검사
         accountService.validate(form);

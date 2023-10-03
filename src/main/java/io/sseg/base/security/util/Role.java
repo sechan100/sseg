@@ -1,4 +1,4 @@
-package io.sseg.infra;
+package io.sseg.base.security.util;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

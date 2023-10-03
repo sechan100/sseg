@@ -1,7 +1,7 @@
 package io.sseg.boundedcontext.user.model.dto;
 
 import io.sseg.boundedcontext.user.entity.Account;
-import io.sseg.infra.Role;
+import io.sseg.base.security.util.Role;
 import lombok.Data;
 
 @Data

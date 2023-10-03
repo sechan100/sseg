@@ -1,4 +1,4 @@
-package io.sseg.infra;
+package io.sseg.base.properties;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

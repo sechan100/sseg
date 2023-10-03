@@ -5,7 +5,7 @@ import io.sseg.boundedcontext.user.entity.Account;
 import io.sseg.boundedcontext.user.model.dto.PrincipalAccountDto;
 import io.sseg.boundedcontext.user.model.oauth.PrincipalContext;
 import io.sseg.boundedcontext.user.service.AccountService;
-import io.sseg.infra.Role;
+import io.sseg.base.security.util.Role;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -152,7 +152,4 @@ public class Rq {
         
     }
     
-    public Account getAccount(){
-        return null;
-    }
 }

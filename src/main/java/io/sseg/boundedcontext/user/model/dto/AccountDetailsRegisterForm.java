@@ -2,8 +2,8 @@ package io.sseg.boundedcontext.user.model.dto;
 
 
 import io.sseg.boundedcontext.user.model.oauth.ProviderUser;
-import io.sseg.infra.Role;
-import io.sseg.infra.ProviderType;
+import io.sseg.base.security.util.Role;
+import io.sseg.base.security.util.ProviderType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
