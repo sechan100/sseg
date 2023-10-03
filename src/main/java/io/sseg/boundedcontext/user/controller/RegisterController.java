@@ -2,6 +2,7 @@ package io.sseg.boundedcontext.user.controller;
 
 
 import io.sseg.base.request.Rq;
+import io.sseg.base.validation.validator.AccountDtoValidator;
 import io.sseg.boundedcontext.user.model.dto.AccountDetailsRegisterForm;
 import io.sseg.boundedcontext.user.model.dto.AwaitingEmailVerifyingRedisEntity;
 import io.sseg.boundedcontext.user.service.AccountService;
@@ -12,10 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,7 +24,11 @@ public class RegisterController {
     private final Rq rq;
     private final AccountService accountService;
     private final AwaitingEmailVerifyingFormService awaitingEmailVerifyingFormService;
-    
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.addValidators(new AccountDtoValidator(accountService.getAccountRepository()));
+    }
     
     
     @GetMapping("/register")
@@ -46,10 +50,7 @@ public class RegisterController {
     
     
     @PostMapping("/verify/email")
-    public String verifyEmail(@Valid VerifyRequestRegisterForm form) {
-        
-        // form 유효성 검사
-        accountService.validate(form);
+    public String verifyEmail(@Valid VerifyRequestRegisterForm form, Model model) {
         
         // 기존에 이메일 인증 요청을 보낸 기록이 있는지 확인
         boolean isExistInCache = awaitingEmailVerifyingFormService.existsById(form.getEmail());
@@ -82,9 +83,7 @@ public class RegisterController {
     
     @PostMapping("/register")
     @ResponseBody
-    public String register(AccountDetailsRegisterForm form){
-        
-        // form 유효성 검사 나중에 구현하자..
+    public String register(@Valid AccountDetailsRegisterForm form){
         
         accountService.register(form);
         

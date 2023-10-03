@@ -2,13 +2,15 @@ package io.sseg.boundedcontext.user.model.dto;
 
 
 import io.sseg.base.security.util.ProviderType;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class VerifyRequestRegisterForm extends DefaultAccountDto{
+public class VerifyRequestRegisterForm extends DefaultAccountDto {
     
+    @NotEmpty(message = "비밀번호 확인을 입력해주세요.")
     private String passwordConfirm;
     
     public VerifyRequestRegisterForm() {

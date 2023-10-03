@@ -1,7 +1,6 @@
 package io.sseg.boundedcontext.user.service;
 
 
-import io.sseg.boundedcontext.user.exception.RegistrationException;
 import io.sseg.boundedcontext.user.model.dto.AccountDetailsRegisterForm;
 import io.sseg.boundedcontext.user.model.dto.AccountDto;
 import io.sseg.boundedcontext.user.repository.AwaitingEmailVerifyingFormRepository;
@@ -9,11 +8,12 @@ import io.sseg.boundedcontext.email.model.EmailRequest;
 import io.sseg.boundedcontext.email.service.EmailSendService;
 import io.sseg.boundedcontext.email.service.ThymeleafEmailTemplateResolver;
 import io.sseg.boundedcontext.user.entity.Account;
-import io.sseg.boundedcontext.user.model.dto.VerifyRequestRegisterForm;
 import io.sseg.boundedcontext.user.repository.AccountRepository;
 import io.sseg.base.properties.Properties;
 import io.sseg.base.security.util.Role;
 import io.sseg.infra.Ut;
+import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AccountService {
     
-    private final AccountRepository accountRepository;
+    @Getter private final AccountRepository accountRepository;
     private final ThymeleafEmailTemplateResolver thymeleafEmailTemplateResolver;
     private final EmailSendService emailSendService;
     private final AwaitingEmailVerifyingFormRepository emailCacheRepository;
@@ -35,13 +35,8 @@ public class AccountService {
     
     
     // OAuth2를 이용하여 받아온 사용자 정보를 Account 엔티티 형태로 converting하여 일반적인 회원가입시에 사용하는 register 메소드로 DB저장을 위임
-    public void register(AccountDetailsRegisterForm form) {
+    public void register(@Valid AccountDetailsRegisterForm form) {
         
-        // username 중복 검사
-        boolean registerAvailability = !isExistUsername(form.getUsername());
-        
-        if(registerAvailability) {
-            
             Account account = Account.builder()
                     .provider(form.getProvider())
                     .email(form.getEmail())
@@ -52,33 +47,6 @@ public class AccountService {
                     .build();
             
             accountRepository.save(account);
-            
-        } else {
-            
-            throw new RegistrationException(RegistrationException.INVALID_USERNAME);
-            
-        }
-    }
-    
-    
-    // VerifyRequestRegisterForm의 아이디, 비밀번호, 이메일등의 중복 검사.
-    // provider가 다른 경우, 같은 이메일, 아이디라도 다른 계정으로 판단한다.
-    public void validate(VerifyRequestRegisterForm form){
-        
-        // username 중복 검사
-        if(existsByUsername(form.getUsername(), form.getProvider())){
-            throw new RegistrationException(RegistrationException.USERNAME_DUPLICATION);
-        }
-        
-        // password 일치 검사
-        if(!form.getPassword().equals(form.getPasswordConfirm())){
-            throw new RegistrationException(RegistrationException.INVALID_PASSWORD_CONFIRM);
-        }
-        
-        // email 중복 검사
-        if(existsByEmailAndProvider(form.getEmail(), form.getProvider())){
-            throw new RegistrationException(RegistrationException.EMAIL_DUPLICATION);
-        }
     }
     
     
@@ -127,11 +95,7 @@ public class AccountService {
         return accountRepository.findByUsername(username);
     }
     
-    private boolean isExistUsername(String username) {
-        return accountRepository.existsByUsername(username);
-    }
-    
-    public boolean existsByUsername(String username, String provider) {
+    public boolean existsByUsername(String username) {
         return accountRepository.existsByUsername(username);
     }
     

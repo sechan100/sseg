@@ -4,6 +4,8 @@ package io.sseg.boundedcontext.user.model.dto;
 import io.sseg.boundedcontext.user.model.oauth.ProviderUser;
 import io.sseg.base.security.util.Role;
 import io.sseg.base.security.util.ProviderType;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,8 +13,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class AccountDetailsRegisterForm extends DefaultAccountDto {
     
+    @NotEmpty
     private String nickname;
-    private String role;
     
     
     
@@ -25,7 +27,6 @@ public class AccountDetailsRegisterForm extends DefaultAccountDto {
         super.password = form.getPassword();
         super.email = form.getEmail();
         super.provider = form.getProvider();
-        this.role = Role.USER;
     }
     
     public AccountDetailsRegisterForm(AccountDto form){
@@ -33,7 +34,6 @@ public class AccountDetailsRegisterForm extends DefaultAccountDto {
         super.password = form.getPassword();
         super.email = form.getEmail();
         super.provider = form.getProvider();
-        this.role = Role.USER;
     }
     
     public AccountDetailsRegisterForm(AwaitingEmailVerifyingRedisEntity form){
@@ -41,7 +41,6 @@ public class AccountDetailsRegisterForm extends DefaultAccountDto {
         super.password = form.getPassword();
         super.email = form.getEmail();
         super.provider = form.getProvider();
-        this.role = Role.USER;
     }
     
 }

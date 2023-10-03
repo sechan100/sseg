@@ -19,7 +19,8 @@ public class ExceptionController {
         List<String> errors = ex.getBindingResult()
                 .getAllErrors()
                 .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .map(fieldError -> fieldError.getCode() + ": " + fieldError.getDefaultMessage())
+//                .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
         
         return ResponseEntity.badRequest().body(errors);
