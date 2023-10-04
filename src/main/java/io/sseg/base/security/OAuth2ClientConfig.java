@@ -26,17 +26,32 @@ public class OAuth2ClientConfig {
     
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/", "/login", "/register", "/verify/email", "/error*").permitAll().requestMatchers("/api/**").permitAll().anyRequest().authenticated())
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/", "/login", "/register", "/verify/email", "/error*").permitAll()
+                        .requestMatchers("/api/**").permitAll()
+                        .anyRequest().authenticated()
+                )
                 
-                .formLogin(form -> form.loginPage("/login"))
+                .formLogin(form -> form
+                        .loginPage("/login")
+                )
                 
-                .oauth2Login(oauth2 -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService)).loginPage("/login"))
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                        .loginPage("/login")
+                )
                 
                 .csrf(AbstractHttpConfigurer::disable)
                 
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 
-                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/").permitAll());
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/").permitAll()
+                );
         
         
         return http.build();

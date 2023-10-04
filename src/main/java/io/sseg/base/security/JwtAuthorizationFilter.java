@@ -1,11 +1,8 @@
 package io.sseg.base.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.sseg.base.jwt.JwtUtil;
+import io.sseg.base.jwt.JwtProvider;
 import io.sseg.base.request.Rq;
-import io.sseg.boundedcontext.application.entity.Application;
+import io.sseg.boundedcontext.jwt.model.JwtTokenDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     
-    private final JwtUtil jwtUtil;
+    private final JwtProvider jwtProvider;
     private final Rq rq;
     
     @Override
@@ -37,17 +34,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String token = header.replace("Bearer ", "");
         
         // token validation
-        if(!jwtUtil.validateToken(token)){
+        if(!jwtProvider.validateToken(token)){
             filterChain.doFilter(request, response);
             return;
         }
         
-        
-        Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(jwtUtil.getSignKey()).build().parseClaimsJws(token);
-        Claims claims = claimsJws.getBody();
-        Long appId = Long.valueOf(claims.getSubject());
-        
-        rq.setRequestAttr("appId", appId);
+        rq.setJwtToken(new JwtTokenDto(token, jwtProvider.getSignKey()));
     
         filterChain.doFilter(request, response);
     }

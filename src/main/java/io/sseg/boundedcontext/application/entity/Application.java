@@ -25,6 +25,8 @@ public class Application extends UserOwnable {
     
     private String appSecret;
     
+    private String refreshToken;
+    
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "host", column = @Column(name = "smtp_host")),

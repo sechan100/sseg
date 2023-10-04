@@ -1,7 +1,7 @@
 package io.sseg.boundedcontext.application.controller;
 
 
-import io.sseg.base.jwt.JwtUtil;
+import io.sseg.base.jwt.JwtProvider;
 import io.sseg.base.request.Rq;
 import io.sseg.boundedcontext.application.entity.Application;
 import io.sseg.boundedcontext.application.model.ApplicationRegistrationDto;
@@ -23,25 +23,26 @@ import java.util.List;
 public class ApplicationController {
     
     private final Rq rq;
-    private final JwtUtil jwtUtil;
+    private final JwtProvider jwtProvider;
     private final ApplicationService applicationService;
     
     
+    // 등록
     @GetMapping("/application/create")
-    public String showApplicationRegistrationForm(Model model){
+    public String getApplicationRegisterForm(Model model){
         
         model.addAttribute("form", new ApplicationRegistrationDto());
         
         return "/user/application/create";
     }
     
-    
+    // 등록 proc
     @PostMapping("/application/create")
     @ResponseBody
     public String createApplication(@Valid ApplicationRegistrationDto applicationRegistrationForm){
         
         String appId = Ut.generator.generateUUID();
-        String appSecret = Ut.generator.generateAppSecret();
+        String appSecret = Ut.generator.generateRandomString();
         String encodedAppSecret = Ut.passwordEncoder.encode(appSecret);
         
         Long applicationId = applicationService.create(applicationRegistrationForm, appId, encodedAppSecret);
@@ -51,9 +52,9 @@ public class ApplicationController {
     }
     
     
-    
+    // 리스트
     @GetMapping("/application")
-    public String showApplicationList(Model model){
+    public String getApplicationList(Model model){
         
         List<Application> applications = applicationService.findAllByOwnerId(rq.getAccountPrincipal().getId());
         
@@ -62,9 +63,9 @@ public class ApplicationController {
         return "/user/application/list";
     }
     
-    
+    // 상세 (권한 체크에 오류있음)
     @GetMapping("/application/{applicationId}")
-    public String application(@PathVariable Long applicationId, Model model){
+    public String getApplicationDetail(@PathVariable Long applicationId, Model model){
         
         rq.isAccessAllowed(applicationId, Application.class);
         

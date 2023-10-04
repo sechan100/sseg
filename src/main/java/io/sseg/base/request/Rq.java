@@ -1,6 +1,7 @@
 package io.sseg.base.request;
 
 import io.sseg.base.entity.UserOwnable;
+import io.sseg.boundedcontext.jwt.model.JwtTokenDto;
 import io.sseg.boundedcontext.user.entity.Account;
 import io.sseg.boundedcontext.user.model.dto.AccountPrincipal;
 import io.sseg.boundedcontext.user.model.oauth.PrincipalContext;
@@ -95,6 +96,13 @@ public class Rq {
         return (R) request.getAttribute(attrName);
     }
     
+    public void setJwtToken(JwtTokenDto jwtTokenDto) {
+        setRequestAttr("jwtToken", jwtTokenDto);
+    }
+    
+    public JwtTokenDto getJwtToken() {
+        return getRequestAttr("jwtToken");
+    }
     
     public Cookie getCookie(String name){
         

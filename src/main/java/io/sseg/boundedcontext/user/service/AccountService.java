@@ -1,16 +1,16 @@
 package io.sseg.boundedcontext.user.service;
 
 
-import io.sseg.boundedcontext.user.model.dto.AccountDetailsRegisterForm;
-import io.sseg.boundedcontext.user.model.dto.AccountDto;
-import io.sseg.boundedcontext.user.repository.AwaitingEmailVerifyingFormRepository;
+import io.sseg.base.properties.CustomProperties;
+import io.sseg.base.security.util.Role;
 import io.sseg.boundedcontext.email.model.EmailRequest;
 import io.sseg.boundedcontext.email.service.EmailSendService;
 import io.sseg.boundedcontext.email.service.ThymeleafEmailTemplateResolver;
 import io.sseg.boundedcontext.user.entity.Account;
+import io.sseg.boundedcontext.user.model.dto.AccountDetailsRegisterForm;
+import io.sseg.boundedcontext.user.model.dto.AccountDto;
 import io.sseg.boundedcontext.user.repository.AccountRepository;
-import io.sseg.base.properties.Properties;
-import io.sseg.base.security.util.Role;
+import io.sseg.boundedcontext.user.repository.AwaitingEmailVerifyingFormRepository;
 import io.sseg.infra.util.Ut;
 import jakarta.validation.Valid;
 import lombok.Getter;
@@ -20,17 +20,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
+import java.util.Properties;
 
 @Service
 @RequiredArgsConstructor
 public class AccountService {
     
-    @Getter private final AccountRepository accountRepository;
+    @Getter
+    private final AccountRepository accountRepository;
     private final ThymeleafEmailTemplateResolver thymeleafEmailTemplateResolver;
     private final EmailSendService emailSendService;
     private final AwaitingEmailVerifyingFormRepository emailCacheRepository;
     private final PasswordEncoder passwordEncoder;
-    private final Properties properties;
+    private final CustomProperties customProperties;
     
     
     
@@ -56,14 +58,14 @@ public class AccountService {
             authCode = Ut.generator.generateRandomString();
         }
         
-        String authenticationUrl = properties.getHost() + "/register?code=" + authCode + "&email=" + toEmail;
+        String authenticationUrl = customProperties.getHost() + "/register?code=" + authCode + "&email=" + toEmail;
         
         // 인증 코드를 템플릿에 담아서 이메일 내용 생성
         Map<String, Object> variables = Map.of("authenticationUrl", authenticationUrl);
         String emailContent = thymeleafEmailTemplateResolver.resolveFile("/email/email_verify_template", variables);
         
         // 이메일 발송
-        emailSendService.sendMail(new EmailRequest(properties.getEmailVerificationFromName(), toEmail, "SSEG 회원가입 이메일 인증", emailContent));
+        emailSendService.sendMail(new EmailRequest(customProperties.getEmailVerificationFromName(), toEmail, "SSEG 회원가입 이메일 인증", emailContent));
         
         
         return authCode;

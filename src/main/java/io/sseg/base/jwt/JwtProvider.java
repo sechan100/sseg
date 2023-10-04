@@ -3,34 +3,43 @@ package io.sseg.base.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import lombok.Getter;
+import io.sseg.base.jwt.util.JwtTokenType;
+import io.sseg.base.properties.JwtProperties;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
 
 
 @Component
 @RequiredArgsConstructor
-public class JwtUtil {
+public class JwtProvider {
     
-    @Value("${jwt.secret}")
-    private String SECRET_KEY;
+    private final JwtProperties properties;
     
-    @Value("${jwt.expireTimeMinutes}")
-    private Integer expireTimeMinutes;
-    
-    public String generateToken(Long appId) {
+    public String generateAccessToken(String appId) {
         return Jwts.builder()
-                .setSubject(appId.toString())
+                .setClaims(Map.of(JwtTokenType.CLAIM_KEY, JwtTokenType.ACCESS_TOKEN))
+                .setSubject(appId)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * expireTimeMinutes))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * properties.getExpirationPeriodMinutes()))
                 .signWith(getSignKey())
                 .compact();
     }
+    
+    public String generateRefreshToken(String appId) {
+        return Jwts.builder()
+                .setClaims(Map.of(JwtTokenType.CLAIM_KEY, JwtTokenType.REFRESH_TOKEN))
+                .setSubject(appId)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * properties.getExpirationPeriodDay()))
+                .signWith(getSignKey())
+                .compact();
+    }
+    
     
     public String extractAppId(String token) {
         return getClaims(token).getSubject();
@@ -46,7 +55,7 @@ public class JwtUtil {
     }
     
     public Key getSignKey() {
-        byte[] decodedKey = SECRET_KEY.getBytes();
+        byte[] decodedKey = properties.getSecretKey().getBytes();
         return new SecretKeySpec(decodedKey, 0, decodedKey.length, "HmacSHA256");
     }
     

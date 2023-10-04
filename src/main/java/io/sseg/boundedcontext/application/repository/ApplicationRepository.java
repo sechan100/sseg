@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
     List<Application> findByOwnerId(Long ownerId);
+    
+    Application findByAppId(String appId);
 }

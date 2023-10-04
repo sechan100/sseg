@@ -1,12 +1,21 @@
 server:
   port: 8080
 
+jwt:
+  expirationPeriodMinutes: 30
+  refresh:
+    expirationPeriodDay: 7
+
+
 spring:
   profiles:
     active: smtp
     include:
       - secret
       - custom
+
+  jackson:
+    default-property-inclusion: non_null
 
   redis:
     host: localhost

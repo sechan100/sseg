@@ -3,11 +3,11 @@ package io.sseg.boundedcontext.application.service;
 
 import io.sseg.base.request.Rq;
 import io.sseg.boundedcontext.application.entity.Application;
-import io.sseg.boundedcontext.application.entity.SMTPProperties;
 import io.sseg.boundedcontext.application.model.ApplicationDto;
 import io.sseg.boundedcontext.application.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -46,4 +46,15 @@ public class ApplicationService {
     public Application findById(Long applicationId) {
         return applicationRepository.findById(applicationId).orElseThrow();
     }
+    
+    public Application findByAppId(String appId) {
+        return applicationRepository.findByAppId(appId);
+    }
+    
+    @Transactional
+    public void saveRefreshToken(String appId, String refreshToken) {
+        Application application = findByAppId(appId);
+        application.setRefreshToken(refreshToken);
+    }
+    
 }
