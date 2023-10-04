@@ -38,5 +38,5 @@ out/
 
 
 ### security ###
-src/main/resources/application-smtp.yml
-src/main/resources/application-oauth2.yml
+/src/main/resources/application-smtp.yml
+/src/main/resources/application-secret.yml
