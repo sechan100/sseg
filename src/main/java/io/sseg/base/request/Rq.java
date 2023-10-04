@@ -87,6 +87,14 @@ public class Rq {
     }
     
     
+    public void setRequestAttr(String attrName, Object attrValue) {
+        request.setAttribute(attrName, attrValue);
+    }
+    
+    public <R> R getRequestAttr(String attrName) {
+        return (R) request.getAttribute(attrName);
+    }
+    
     
     public Cookie getCookie(String name){
         

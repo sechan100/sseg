@@ -21,6 +21,10 @@ public class Application extends UserOwnable {
     
     private String domain;
     
+    private String appId;
+    
+    private String appSecret;
+    
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "host", column = @Column(name = "smtp_host")),

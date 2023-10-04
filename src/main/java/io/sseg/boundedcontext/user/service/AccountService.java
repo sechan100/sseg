@@ -11,7 +11,7 @@ import io.sseg.boundedcontext.user.entity.Account;
 import io.sseg.boundedcontext.user.repository.AccountRepository;
 import io.sseg.base.properties.Properties;
 import io.sseg.base.security.util.Role;
-import io.sseg.infra.Ut;
+import io.sseg.infra.util.Ut;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +53,7 @@ public class AccountService {
     public String sendEmailVerifyingEmail(String toEmail, String authCode) {
         
         if(authCode == null){
-            authCode = Ut.randomString();
+            authCode = Ut.generator.generateRandomString();
         }
         
         String authenticationUrl = properties.getHost() + "/register?code=" + authCode + "&email=" + toEmail;

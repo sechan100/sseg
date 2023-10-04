@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
@@ -20,33 +21,22 @@ public class OAuth2ClientConfig {
     
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomUserDetailsService customUserDetailsService;
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
     
     
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/register", "/verify/email", "/error*").permitAll()
-                        .anyRequest().authenticated()
-                )
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/", "/login", "/register", "/verify/email", "/error*").permitAll().requestMatchers("/api/**").permitAll().anyRequest().authenticated())
                 
-                .formLogin(form -> form
-                        .loginPage("/login")
-                )
+                .formLogin(form -> form.loginPage("/login"))
                 
-                .oauth2Login(oauth2 -> oauth2
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService)
-                        )
-                        .loginPage("/login")
-                )
+                .oauth2Login(oauth2 -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService)).loginPage("/login"))
                 
                 .csrf(AbstractHttpConfigurer::disable)
                 
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/").permitAll()
-                );
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+                
+                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/").permitAll());
         
         
         return http.build();

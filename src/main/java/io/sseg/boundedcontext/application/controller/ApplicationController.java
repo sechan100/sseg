@@ -4,9 +4,9 @@ package io.sseg.boundedcontext.application.controller;
 import io.sseg.base.jwt.JwtUtil;
 import io.sseg.base.request.Rq;
 import io.sseg.boundedcontext.application.entity.Application;
-import io.sseg.boundedcontext.application.model.ApplicationDto;
 import io.sseg.boundedcontext.application.model.ApplicationRegistrationDto;
 import io.sseg.boundedcontext.application.service.ApplicationService;
+import io.sseg.infra.util.Ut;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,16 +26,28 @@ public class ApplicationController {
     private final JwtUtil jwtUtil;
     private final ApplicationService applicationService;
     
+    
+    @GetMapping("/application/create")
+    public String showApplicationRegistrationForm(Model model){
+        
+        model.addAttribute("form", new ApplicationRegistrationDto());
+        
+        return "/user/application/create";
+    }
+    
+    
     @PostMapping("/application/create")
     @ResponseBody
     public String createApplication(@Valid ApplicationRegistrationDto applicationRegistrationForm){
         
-        Long applicationId = applicationService.create(applicationRegistrationForm);
+        String appId = Ut.generator.generateUUID();
+        String appSecret = Ut.generator.generateAppSecret();
+        String encodedAppSecret = Ut.passwordEncoder.encode(appSecret);
         
-        String jwtToken = jwtUtil.generateToken(applicationId);
+        Long applicationId = applicationService.create(applicationRegistrationForm, appId, encodedAppSecret);
         
         
-        return jwtToken;
+        return "redirect:/application";
     }
     
     
@@ -52,16 +64,15 @@ public class ApplicationController {
     
     
     @GetMapping("/application/{applicationId}")
-    public String application(@PathVariable Long applicationId){
+    public String application(@PathVariable Long applicationId, Model model){
         
         rq.isAccessAllowed(applicationId, Application.class);
         
+        model.addAttribute("application", applicationService.findById(applicationId));
         
         
-        return "redirect:/";
+        return "/user/application/detail";
     }
-    
-    
     
     
 }

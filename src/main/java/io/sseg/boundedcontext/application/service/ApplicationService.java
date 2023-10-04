@@ -26,18 +26,24 @@ public class ApplicationService {
     }
     
     
-    public Long create(ApplicationDto applicationRegistrationForm) {
+    public Long create(ApplicationDto applicationRegistrationForm, String appId, String appSecret) {
             
         Application application = Application.builder()
                 .name(applicationRegistrationForm.getName())
                 .description(applicationRegistrationForm.getDescription())
                 .domain(applicationRegistrationForm.getDomain())
                 .owner(rq.getAccount())
+                .appId(appId)
+                .appSecret(appSecret)
                 .smtpProperties(applicationRegistrationForm.getSmtpProperties())
                 .build();
         
         applicationRepository.save(application);
         
         return application.getId();
+    }
+    
+    public Application findById(Long applicationId) {
+        return applicationRepository.findById(applicationId).orElseThrow();
     }
 }

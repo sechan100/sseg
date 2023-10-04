@@ -8,7 +8,7 @@ import io.sseg.boundedcontext.user.model.oauth.GoogleUser;
 import io.sseg.boundedcontext.user.model.oauth.NaverUser;
 import io.sseg.boundedcontext.user.model.oauth.PrincipalContext;
 import io.sseg.boundedcontext.user.model.oauth.ProviderUser;
-import io.sseg.infra.Ut;
+import io.sseg.infra.util.Ut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -47,7 +47,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             
         // 기존 로그인 정보가 없다면 기본 Account 정보가 포함된 AccountDetilasRegisterForm을 redis에 저장하고 리다이렉트
         } else {
-            String authenticationCode = Ut.randomString();
+            String authenticationCode = Ut.generator.generateRandomString();
             emailCacheService.save(new AwaitingEmailVerifyingRedisEntity(registerForm, authenticationCode));
             rq.redirect("/register?code=" + authenticationCode + "&email=" + registerForm.getEmail());
             return new PrincipalContext(Account.builder().username("sechan").email("sechan").password("ddd").role("ROLE_USEr").build());

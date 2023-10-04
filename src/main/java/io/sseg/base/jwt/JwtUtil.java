@@ -1,21 +1,27 @@
 package io.sseg.base.jwt;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 
 
 @Component
+@RequiredArgsConstructor
 public class JwtUtil {
     
-    private final String SECRET_KEY = "YOUR_SECRET_KEYdKJDKLFEIBIGO23478tfdfdhf8adDhfdfdsaghbdnfldknKNDXFds";
-    private final Integer expireTimeMinutes = 30;
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
+    
+    @Value("${jwt.expireTimeMinutes}")
+    private Integer expireTimeMinutes;
     
     public String generateToken(Long appId) {
         return Jwts.builder()
@@ -27,20 +33,25 @@ public class JwtUtil {
     }
     
     public String extractAppId(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+        return getClaims(token).getSubject();
     }
     
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;
         }
     }
     
-    private Key getSignKey() {
+    public Key getSignKey() {
         byte[] decodedKey = SECRET_KEY.getBytes();
         return new SecretKeySpec(decodedKey, 0, decodedKey.length, "HmacSHA256");
+    }
+    
+    
+    public Claims getClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody();
     }
 }
