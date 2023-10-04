@@ -1,10 +1,12 @@
-package io.sseg.boundedcontext.jwt;
+package io.sseg.boundedcontext.jwt.controller;
 
 
+import io.sseg.base.aop.RequireJwtToken;
 import io.sseg.base.http.ApiResponse;
 import io.sseg.base.http.SsegApiResponseStatus;
 import io.sseg.base.jwt.JwtProvider;
-import io.sseg.base.properties.JwtProperties;
+import io.sseg.base.constants.JwtProperties;
+import io.sseg.base.jwt.JwtTokenType;
 import io.sseg.base.request.Rq;
 import io.sseg.boundedcontext.application.entity.Application;
 import io.sseg.boundedcontext.application.service.ApplicationService;
@@ -58,19 +60,11 @@ public class ApiJwtController {
     }
 
     @GetMapping("/application/accessToken")
+    @RequireJwtToken(JwtTokenType.REFRESH_TOKEN)
     public ResponseEntity<ApiResponse<String>> getNewAccessToken() {
         
         JwtTokenDto tokenDto = rq.getJwtToken();
         
-        // null 체크
-        if(tokenDto == null){
-            return ApiResponse.badRequest(SsegApiResponseStatus.NULL_PARAMETER);
-        }
-        
-        // 토큰 타입 체크
-        if(!tokenDto.isRefreshToken()){
-            return ApiResponse.badRequest(SsegApiResponseStatus.INVALID_PARAMETER);
-        }
         
         Application application = applicationService.findByAppId(tokenDto.getAppId());
         

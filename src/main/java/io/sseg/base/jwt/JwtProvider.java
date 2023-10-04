@@ -3,8 +3,7 @@ package io.sseg.base.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.sseg.base.jwt.util.JwtTokenType;
-import io.sseg.base.properties.JwtProperties;
+import io.sseg.base.constants.JwtProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

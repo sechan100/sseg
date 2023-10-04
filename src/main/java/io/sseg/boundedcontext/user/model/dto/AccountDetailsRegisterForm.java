@@ -2,10 +2,8 @@ package io.sseg.boundedcontext.user.model.dto;
 
 
 import io.sseg.boundedcontext.user.model.oauth.ProviderUser;
-import io.sseg.base.security.util.Role;
-import io.sseg.base.security.util.ProviderType;
+import io.sseg.base.security.ProviderType;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

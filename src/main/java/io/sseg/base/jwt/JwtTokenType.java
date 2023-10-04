@@ -1,6 +1,4 @@
-package io.sseg.base.jwt.util;
-
-import lombok.Getter;
+package io.sseg.base.jwt;
 
 public enum JwtTokenType {
     

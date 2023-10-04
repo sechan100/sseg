@@ -1,7 +1,7 @@
 package io.sseg.boundedcontext.user.model.oauth;
 
 
-import io.sseg.base.security.util.Role;
+import io.sseg.base.security.Role;
 import lombok.Getter;
 import io.sseg.boundedcontext.user.entity.Account;
 import io.sseg.boundedcontext.user.model.dto.AccountPrincipal;

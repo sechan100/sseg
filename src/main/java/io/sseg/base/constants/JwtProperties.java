@@ -1,4 +1,4 @@
-package io.sseg.base.properties;
+package io.sseg.base.constants;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

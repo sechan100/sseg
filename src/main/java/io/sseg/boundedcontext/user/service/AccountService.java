@@ -1,8 +1,8 @@
 package io.sseg.boundedcontext.user.service;
 
 
-import io.sseg.base.properties.CustomProperties;
-import io.sseg.base.security.util.Role;
+import io.sseg.base.constants.CustomProperties;
+import io.sseg.base.security.Role;
 import io.sseg.boundedcontext.email.model.EmailRequest;
 import io.sseg.boundedcontext.email.service.EmailSendService;
 import io.sseg.boundedcontext.email.service.ThymeleafEmailTemplateResolver;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
-import java.util.Properties;
 
 @Service
 @RequiredArgsConstructor
@@ -65,7 +64,7 @@ public class AccountService {
         String emailContent = thymeleafEmailTemplateResolver.resolveFile("/email/email_verify_template", variables);
         
         // 이메일 발송
-        emailSendService.sendMail(new EmailRequest(customProperties.getEmailVerificationFromName(), toEmail, "SSEG 회원가입 이메일 인증", emailContent));
+        emailSendService.sendMail(new EmailRequest(customProperties.getEmailVerificationFromName(), toEmail, "SSEG 회원가입 이메일 인증"), emailContent);
         
         
         return authCode;

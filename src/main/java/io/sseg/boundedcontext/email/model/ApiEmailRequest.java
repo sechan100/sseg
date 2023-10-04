@@ -9,10 +9,10 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EmailRequest {
+public class ApiEmailRequest {
     
-    private String from;
-    private String to;
-    private String subject;
+    private EmailRequest emailRequest;
+    private String templateName;
+    private Map<String, Object> templateArgs;
     
 }

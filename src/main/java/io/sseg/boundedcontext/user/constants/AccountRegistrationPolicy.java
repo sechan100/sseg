@@ -1,10 +1,10 @@
-package io.sseg.boundedcontext.user.exception;
+package io.sseg.boundedcontext.user.constants;
 
 import lombok.Getter;
 
 import java.util.Set;
 
-public class AccountValidationRules {
+public class AccountRegistrationPolicy {
     
     public static class Constraints {
         

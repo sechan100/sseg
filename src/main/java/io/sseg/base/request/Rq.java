@@ -6,7 +6,7 @@ import io.sseg.boundedcontext.user.entity.Account;
 import io.sseg.boundedcontext.user.model.dto.AccountPrincipal;
 import io.sseg.boundedcontext.user.model.oauth.PrincipalContext;
 import io.sseg.boundedcontext.user.service.AccountService;
-import io.sseg.base.security.util.Role;
+import io.sseg.base.security.Role;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

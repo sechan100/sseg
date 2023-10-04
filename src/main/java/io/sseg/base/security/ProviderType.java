@@ -1,4 +1,4 @@
-package io.sseg.base.security.util;
+package io.sseg.base.security;
 
 public class ProviderType {
     

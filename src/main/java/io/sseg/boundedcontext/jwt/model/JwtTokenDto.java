@@ -3,7 +3,7 @@ package io.sseg.boundedcontext.jwt.model;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.sseg.base.jwt.util.JwtTokenType;
+import io.sseg.base.jwt.JwtTokenType;
 import lombok.Data;
 
 import java.security.Key;
