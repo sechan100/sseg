@@ -2,8 +2,10 @@ package io.sseg.boundedcontext.email.model;
 
 
 import lombok.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Map;
+import java.util.HashMap;
 
 @Data
 @AllArgsConstructor
@@ -13,6 +15,6 @@ public class ApiEmailRequest {
     
     private EmailRequest emailRequest;
     private String templateName;
-    private Map<String, Object> templateArgs;
+    private HashMap<String, Object> templateArgs;
     
 }

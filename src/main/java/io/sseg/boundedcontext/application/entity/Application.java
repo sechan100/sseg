@@ -3,8 +3,11 @@ package io.sseg.boundedcontext.application.entity;
 
 import io.sseg.base.entity.UserOwnable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 
 @Entity
@@ -35,5 +38,9 @@ public class Application extends UserOwnable {
             @AttributeOverride(name = "password", column = @Column(name = "smtp_password")),
     })
     private SMTPProperties smtpProperties;
+    
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "email_template_id")
+    private List<EmailTemplate> emailTemplates;
     
 }

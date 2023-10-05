@@ -22,9 +22,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.annotation.RequestScope;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -133,26 +136,35 @@ public class Rq {
         }
     }
     
-    public <T extends UserOwnable> void isAccessAllowed(Long id, Class<T> clazz) {
+    public <T extends UserOwnable> void isAccessAllowed(Object arg, String argFieldName, Class<T> clazz) {
         
         JpaRepository<UserOwnable, Long> repository = null;
+        Method findMethod = null;
         
-        if(id == null) {
-            throw new NullPointerException("소유권 확인 대상 엔티티의 id값이 존재하지 않습니다.");
+        
+        if(arg == null) {
+            throw new NullPointerException("소유권 확인 대상 엔티티를 특정할 Unique 칼럼 값이 존재하지 않습니다.");
         }
         
         if(clazz != null) {
             String className = clazz.getSimpleName();
-            
             String beanName = Character.toLowerCase(className.charAt(0)) + className.substring(1) + "Repository";
             repository = (JpaRepository<UserOwnable, Long>) context.getBean(beanName);
+            
+            try {
+                findMethod = repository.getClass().getMethod("findBy" + StringUtils.capitalize(argFieldName));
+            } catch(NoSuchMethodException e) {
+                throw new RuntimeException("findBy* 메소드를 찾을 수 없습니다");
+            }
         }
         
-        if(repository == null) {
-            throw new NullPointerException("소유권 확인 대상 엔티티의 레포지토리가 존재하지 않습니다. repository 빈이 존재하지 않거나, repository 빈의 이름이 네이밍 컨벤션에 부합하지 않을 수 있습니다. (네이밍 컨벤션: 엔티티 이름의 첫 글자를 소문자로 바꾸고, 엔티티 이름 + Repository");
-        }
         
-        UserOwnable targetEntity = repository.findById(id).orElseThrow(() -> new NoSuchElementException("소유권 확인 대상 엔티티가 존재하지 않습니다."));
+        UserOwnable targetEntity = null;
+        try {
+            targetEntity = (UserOwnable) findMethod.invoke(repository, arg);
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
         
         
         if (targetEntity.getOwner() != null) {

@@ -11,15 +11,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/application")
 public class ApplicationController {
     
     private final Rq rq;
@@ -28,7 +26,7 @@ public class ApplicationController {
     
     
     // 등록
-    @GetMapping("/application/create")
+    @GetMapping("/create")
     public String getApplicationRegisterForm(Model model){
         
         model.addAttribute("form", new ApplicationRegistrationDto());
@@ -37,7 +35,7 @@ public class ApplicationController {
     }
     
     // 등록 proc
-    @PostMapping("/application/create")
+    @PostMapping("/create")
     @ResponseBody
     public String createApplication(@Valid ApplicationRegistrationDto applicationRegistrationForm){
         
@@ -53,7 +51,7 @@ public class ApplicationController {
     
     
     // 리스트
-    @GetMapping("/application")
+    @GetMapping("")
     public String getApplicationList(Model model){
         
         List<Application> applications = applicationService.findAllByOwnerId(rq.getAccountPrincipal().getId());
@@ -63,13 +61,14 @@ public class ApplicationController {
         return "/user/application/list";
     }
     
-    // 상세 (권한 체크에 오류있음)
-    @GetMapping("/application/{applicationId}")
-    public String getApplicationDetail(@PathVariable Long applicationId, Model model){
+    // 상세
+    @GetMapping("/{appId}")
+    public String getApplicationDetail(@PathVariable String appId, Model model){
         
-        rq.isAccessAllowed(applicationId, Application.class);
+        Application application = applicationService.findByAppId(appId);
         
-        model.addAttribute("application", applicationService.findById(applicationId));
+        
+        model.addAttribute("application", application);
         
         
         return "/user/application/detail";

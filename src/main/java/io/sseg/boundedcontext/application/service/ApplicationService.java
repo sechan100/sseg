@@ -3,7 +3,9 @@ package io.sseg.boundedcontext.application.service;
 
 import io.sseg.base.request.Rq;
 import io.sseg.boundedcontext.application.entity.Application;
+import io.sseg.boundedcontext.application.entity.EmailTemplate;
 import io.sseg.boundedcontext.application.model.ApplicationDto;
+import io.sseg.boundedcontext.application.model.EmailTemplateDto;
 import io.sseg.boundedcontext.application.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -57,4 +59,17 @@ public class ApplicationService {
         application.setRefreshToken(refreshToken);
     }
     
+    @Transactional
+    public boolean addEmailTemplate(String appId, EmailTemplateDto templateForm) {
+        Application application = findByAppId(appId);
+        List<EmailTemplate> emailTemplates = application.getEmailTemplates();
+        boolean isExistName = emailTemplates.stream().allMatch(emailTemplate -> emailTemplate.getName().equals(templateForm.getName()));
+        
+        if(isExistName){
+            return false;
+        } else {
+            emailTemplates.add(new EmailTemplate(templateForm));
+            return true;
+        }
+    }
 }

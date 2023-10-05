@@ -56,7 +56,7 @@ public class ApiJwtController {
         // DB에 refresh token 저장
         applicationService.saveRefreshToken(appId, refreshToken);
         
-        return ApiResponse.success(refreshToken);
+        return ApiResponse.ok(refreshToken);
     }
 
     @GetMapping("/application/accessToken")
@@ -81,7 +81,7 @@ public class ApiJwtController {
         // access token 토큰 생성
         String accessToken = jwtProvider.generateAccessToken(tokenDto.getAppId());
         
-        return ApiResponse.success(accessToken);
+        return ApiResponse.ok(accessToken);
     }
     
 

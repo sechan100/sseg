@@ -21,7 +21,7 @@ public class ApiResponse<T> {
     }
     
     // 200 ok
-    public static <T> ResponseEntity<ApiResponse<T>> success(T data){
+    public static <T> ResponseEntity<ApiResponse<T>> ok(T data){
         return ResponseEntity.ok(new ApiResponse<>(data, SsegApiResponseStatus.SUCCESS));
     }
     
