@@ -70,7 +70,6 @@ public class RegisterController {
         authCode = accountService.sendEmailVerifyingEmail(form.getEmail(), authCode);
         
         
-        
         if(!isExistInCache) {
             // redis 캐쉬에 회원가입 정보 임시저장
             awaitingEmailVerifyingFormService.save(new AwaitingEmailVerifyingRedisEntity(form, authCode));

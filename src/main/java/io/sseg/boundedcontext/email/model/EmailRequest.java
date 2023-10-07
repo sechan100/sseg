@@ -3,8 +3,6 @@ package io.sseg.boundedcontext.email.model;
 
 import lombok.*;
 
-import java.util.Map;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

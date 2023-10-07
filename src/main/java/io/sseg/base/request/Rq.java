@@ -182,7 +182,6 @@ public class Rq {
         
     }
     
-    
     public Account getAccount() {
         return accountService.findByUsername(accountPrincipal.getUsername());
     }

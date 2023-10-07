@@ -33,7 +33,6 @@ public class ApiEmailController {
     private final Rq rq;
     
     
-    // 템플릿 등록 기능 만들기 전까지는, 사용자가 템플릿 선택없이 요청을 보냈다고 가정하고 build-in 템플릿을 사용하여 처리하는 시나리오
     @PostMapping("/send")
     @RequireJwtToken
     public ResponseEntity<ApiResponse<SendingProcessStatus>> sendEmail(@RequestBody ApiEmailRequest request) {
@@ -60,48 +59,12 @@ public class ApiEmailController {
 
         
         emailService.sendMail(request.getEmailRequest(), template);
+//        emailService.sendMail(request.getEmailRequest(), template, application.getSmtpProperties());
         
         return ApiResponse.ok(new SendingProcessStatus());
         
     }
     
-    
-    
-    @GetMapping("/email/send")
-    public EmailResponse sendEmail() {
-        
-        String template = """
-                <html>
-                    <body>
-                        <h1>안녕하세요</h1>
-                        <p th:text="${content}"></p>
-                    </body>
-                </html>
-                """;
-        
-        Map<String, Object> variables = Map.of("content", "테스트 이메일 입니다.");
-        
-        
-        String emailContent = templateResolver.resolveHtml(template, variables);
-        
-        EmailRequest request = EmailRequest.builder()
-                .from("sechan@sseg.io")
-                .to("sechan100@gmail.com")
-                .subject("테스트 이메일 입니다.")
-                .build();
-        
-        
-        emailService.sendMail(request, emailContent);
-        
-        
-        EmailResponse response = EmailResponse.builder()
-                .status(EmailEnums.Status.SUCCESS)
-                .errorCode(EmailEnums.ErrorCode.NO_ERROR)
-                .build();
-        
-        
-        return response;
-    }
     
     
 }

@@ -2,10 +2,6 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
-<style>
-
-</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -23,64 +19,75 @@
     <!--  tailwind  -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!--  daisyui  -->
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.8.1/dist/full.css" rel="stylesheet" type="text/css" />
+    <!--  flowbite  -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css" rel="stylesheet" />
 </head>
-<body class="bg-gray-100" th:with="user = ${@rq.accountPrincipal}">
 
-<div class="min-h-screen flex flex-col pb-10">
-    <header layout:fragment="header">
-        <div class="navbar bg-base-100">
-            <div class="container mx-auto">
-                <div class="flex-1">
-                    <a class="btn btn-ghost normal-case text-xl">
-                        SSEG
-                    </a>
-                </div>
-                <div class="flex-none">
-                    <ul class="menu menu-horizontal px-1">
-                        <li><a th:href="@{/login}">로그인</a></li>
-                        <li><a th:href="@{/register}">회원가입</a></li>
-                        <li th:if="${user.login}">
-                            <details class="relative">
-                                <summary th:text="${user.nickname}"></summary>
-                                <ul class="menu dropdown dropdown-hover bg-base-200 w-56 rounded-box absolute -left-32">
-                                    <li>
-                                        <a>
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
-                                            account settings
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a>
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                            usage statistics
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a>
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
-                                            APIs
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a>
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
-                                            download library
-                                        </a>
-                                    </li>
-                                </ul>
-                            </details>
-                        </li>
-                    </ul>
-                </div>
+<body class="bg-gray-50" th:with="user = ${@rq.accountPrincipal}">
+
+    <!--  flowbite  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+
+
+    <nav class="bg-white fixed w-full z-20 top-0 left-0 border-b border-gray-200">
+
+        <div class="flex flex-wrap items-center justify-between mx-auto p-4">
+
+            <!--로고-->
+            <a href="/" class="flex items-center">
+                <img width="120%" th:src="@{/img/ssegTextLogo.png}" class="h-8 mr-3" alt="Logo" src="#">
+            </a>
+
+            <div class="flex md:order-2">
+
+                <!--로그인, 회원가입-->
+                <a th:href="@{/login}" th:unless="${user.login}">
+                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0">
+                        Get started
+                    </button>
+                </a>
+
+                <!--사용자 프로필-->
+
+
+                <!--반응형 메뉴 드롭다운 버튼-->
+                <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-sticky" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!--상단 메뉴바-->
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+                <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white">
+                    <li>
+                        <a href="#" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0" aria-current="page">
+                            Application
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">
+                            APIs
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">
+                            Client Libraries
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0">
+                            Contact
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <main layout:fragment="main"></main>
-</div>
-
+    <main layout:fragment="main" class="mt-20"></main>
 </body>
 </html>
 

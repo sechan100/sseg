@@ -1,5 +1,7 @@
 package io.sseg.boundedcontext.user.model.dto;
 
+import io.sseg.base.validation.annotation.Unique;
+import io.sseg.boundedcontext.user.repository.AccountRepository;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -22,3 +24,7 @@ abstract public class DefaultAccountDto implements AccountDto {
     protected String email;
     
 }
+
+
+
+
