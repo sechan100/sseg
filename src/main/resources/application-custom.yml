@@ -6,6 +6,7 @@ custom:
 
   site:
     name: sseg
+    login-form-url: /login
     base-url: 'http://localhost:${server.port}'
 
   admin:

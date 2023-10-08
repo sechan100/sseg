@@ -14,8 +14,14 @@
                 </a>
 
 
-                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+                <!--로그인 페이지 안내 문구: 그냥 들어왔을 때-->
+                <h1 th:unless="${#strings.equals(param.error, 'anonymous')}" class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
                     로그인하고 시작하기
+                </h1>
+
+                <!--로그인 페이지 안내 문구: 인증이 필요한 곳으로 먼저 접근후 튕겼을 때-->
+                <h1 th:if="${#strings.equals(param.error, 'anonymous')}" class="text-xl font-bold leading-tight tracking-tight text-red-400 md:text-2xl">
+                    로그인 후 이용해주세요
                 </h1>
 
                 <!-- 로그인 form-->
@@ -24,14 +30,20 @@
                     <!--username-->
                     <div>
                         <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
-                        <input type="text" name="username" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="아이디를 입력해주세요" required="">
+                        <input type="text" name="username" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="아이디를 입력해주세요" required="" autofocus>
                     </div>
+                    <span th:if="${#strings.equals(param.error, 'username')}" class="text-sm leading-tight tracking-tight text-red-400 md:text-sm">
+                        존재하지 않는 아이디입니다
+                    </span>
 
                     <!--password-->
                     <div>
                         <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
                         <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
                     </div>
+                    <span th:if="${#strings.equals(param.error, 'password')}" class="text-sm leading-tight tracking-tight text-red-400 md:text-sm">
+                        비밀번호가 일치하지 않습니다
+                    </span>
 
                     <!--비밀번호 찾기-->
                     <div class="flex items-center justify-end">

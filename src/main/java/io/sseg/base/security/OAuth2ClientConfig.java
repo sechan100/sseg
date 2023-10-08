@@ -1,10 +1,13 @@
 package io.sseg.base.security;
 
+import io.sseg.base.exception.CustomAuthenticationEntryPoint;
+import io.sseg.base.exception.CustomLoginFailureHandler;
 import io.sseg.boundedcontext.user.service.CustomOAuth2UserService;
 import io.sseg.boundedcontext.user.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,7 +24,10 @@ public class OAuth2ClientConfig {
     
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomUserDetailsService customUserDetailsService;
+    private final AuthenticationProvider CustomDaoAuthenticationProvider;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
+    private final CustomAuthenticationEntryPoint entryPoint;
+    private final CustomLoginFailureHandler failureHandler;
     
     
     @Bean
@@ -35,6 +41,7 @@ public class OAuth2ClientConfig {
                 
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .failureHandler(failureHandler)
                 )
                 
                 .oauth2Login(oauth2 -> oauth2
@@ -51,6 +58,10 @@ public class OAuth2ClientConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/").permitAll()
+                )
+        
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(entryPoint)
                 );
         
         

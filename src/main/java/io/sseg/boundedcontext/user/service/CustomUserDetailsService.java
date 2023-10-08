@@ -17,7 +17,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final AccountRepository accountRepository;
     
     @Override
-    public PrincipalContext loadUserByUsername(String username) throws UsernameNotFoundException {
+    public PrincipalContext loadUserByUsername(String username) {
         
         Account user = accountRepository.findByUsername(username);
         
