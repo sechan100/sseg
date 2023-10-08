@@ -1,4 +1,4 @@
-package io.sseg.base.security;
+package io.sseg.base.security.constants;
 
 public class ProviderType {
     

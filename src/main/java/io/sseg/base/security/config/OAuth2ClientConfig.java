@@ -1,7 +1,8 @@
-package io.sseg.base.security;
+package io.sseg.base.security.config;
 
-import io.sseg.base.exception.CustomAuthenticationEntryPoint;
-import io.sseg.base.exception.CustomLoginFailureHandler;
+import io.sseg.base.security.filter.JwtAuthorizationFilter;
+import io.sseg.base.security.handler.CustomAuthenticationEntryPoint;
+import io.sseg.base.security.handler.CustomLoginFailureHandler;
 import io.sseg.boundedcontext.user.service.CustomOAuth2UserService;
 import io.sseg.boundedcontext.user.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;

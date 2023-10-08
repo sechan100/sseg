@@ -1,4 +1,4 @@
-package io.sseg.base.security;
+package io.sseg.base.security.filter;
 
 import io.sseg.base.jwt.JwtProvider;
 import io.sseg.base.request.Rq;

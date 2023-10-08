@@ -9,15 +9,15 @@
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
 
                 <!--로고-->
-                <a href="/" class="flex items-center mb-6 text-2xl font-semibold text-gray-900">
+                <a href="/" class="flex items-center justify-center mb-6 text-2xl font-semibold text-gray-900">
                     <img th:src="@{/img/ssegTextLogo.png}" alt="logo" src="">
                 </a>
 
 
                 <!--로그인 페이지 안내 문구: 그냥 들어왔을 때-->
-                <h1 th:unless="${#strings.equals(param.error, 'anonymous')}" class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-                    로그인하고 시작하기
-                </h1>
+                <div th:unless="${#strings.equals(param.error, 'anonymous')}" class="text-center text-lg font-bold leading-tight tracking-tight text-gray-900 md:text-xl">
+                    Sign in SSEG
+                </div>
 
                 <!--로그인 페이지 안내 문구: 인증이 필요한 곳으로 먼저 접근후 튕겼을 때-->
                 <h1 th:if="${#strings.equals(param.error, 'anonymous')}" class="text-xl font-bold leading-tight tracking-tight text-red-400 md:text-2xl">

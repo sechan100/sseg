@@ -83,10 +83,13 @@ public class RegisterController {
     @ResponseBody
     public String register(@Valid AccountDetailsRegisterForm form){
         
+        // 캐쉬의 인증된 이메일 정보 가져오기
+        AwaitingEmailVerifyingRedisEntity verifiedForm = awaitingEmailVerifyingFormService.findById(form.getEmail());
+            form.setEmail(verifiedForm.getEmail());
+        
         accountService.register(form);
         
         awaitingEmailVerifyingFormService.delete(form.getEmail());
-        
         
         return rq.alert("회원가입이 완료되었습니다.", "/login");
     }

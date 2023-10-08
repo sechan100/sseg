@@ -6,7 +6,7 @@ import io.sseg.boundedcontext.user.entity.Account;
 import io.sseg.boundedcontext.user.model.dto.AccountPrincipal;
 import io.sseg.boundedcontext.user.model.oauth.PrincipalContext;
 import io.sseg.boundedcontext.user.service.AccountService;
-import io.sseg.base.security.Role;
+import io.sseg.base.security.constants.Role;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +26,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.annotation.RequestScope;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -121,11 +120,11 @@ public class Rq {
     }
     
     public String alert(String msg, String redirectUrl){
-        return "<script>alert('" + msg + "'); location.href='" + redirectUrl + "';</script>";
+        return "<script>alert.html('" + msg + "'); location.href='" + redirectUrl + "';</script>";
     }
     
     public String historyBack(String msg){
-        return "<script>alert('" + msg + "'); history.back();</script>";
+        return "<script>alert.html('" + msg + "'); history.back();</script>";
     }
     
     public void redirect(String redirectUrl) {

@@ -1,4 +1,4 @@
-package io.sseg.base.exception;
+package io.sseg.base.security.handler;
 
 import io.sseg.base.request.Rq;
 import jakarta.servlet.ServletException;

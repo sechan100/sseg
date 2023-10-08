@@ -2,7 +2,7 @@ package io.sseg.boundedcontext.user.service;
 
 
 import io.sseg.base.constants.CustomProperties;
-import io.sseg.base.security.Role;
+import io.sseg.base.security.constants.Role;
 import io.sseg.boundedcontext.email.model.EmailRequest;
 import io.sseg.boundedcontext.email.service.EmailSendService;
 import io.sseg.boundedcontext.email.service.ThymeleafEmailTemplateResolver;

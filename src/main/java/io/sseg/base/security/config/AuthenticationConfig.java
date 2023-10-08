@@ -1,4 +1,4 @@
-package io.sseg.base.security;
+package io.sseg.base.security.config;
 
 
 import org.springframework.context.annotation.Bean;
