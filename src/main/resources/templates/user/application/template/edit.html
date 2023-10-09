@@ -1,0 +1,240 @@
+<html lang="en" layout:decorate="~{/user/layout/layout.html}">
+<head>
+    <title>applications</title>
+</head>
+
+<main layout:fragment="main">
+    <div class="flex justify-between items-stretch">
+
+        <div class="py-8 px-6 mx-auto max-w-2xl lg:py-16">
+            <h2 class="mb-4 text-xl font-bold text-gray-900">Edit your Template</h2>
+
+            <form id="createForm" th:action="|/application/${appId}/template/edit?templateName=${template.name}|" method="post" class="relative" th:object="${template}">
+                <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+
+                    <div class="w-full">
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Template Name</label>
+                        <input type="text" th:field="*{name}" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="sseg application" autocomplete="off" required="">
+                        <p class="text-xs">API 요청시에 사용할 템플릿을 선택하기위한 구분자 역할을 합니다. 중복될 수 없습니다.</p>
+                    </div>
+
+                    <div class="w-full">
+                        <label for="template-type" class="block mb-2 text-sm font-medium text-gray-900">Template Type</label>
+                        <select id="template-type" name="templateType" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+                            <option value="THYMELEAF" selected>THYMELEAF</option>
+                            <option value="HTML" disabled>HTML</option>
+                            <option value="MUSTACHE" disabled>MUSTACHE</option>
+                            <option value="FREEMARKER" disabled>FREEMARKER</option>
+                            <option value="JSP" disabled>JSP</option>
+                            <option value="REACT" disabled>REACT</option>
+                            <option value="SVELTE" disabled>SVELTE</option>
+                            <option value="VUE" disabled>VUE</option>
+                            <option value="ANGULAR" disabled>ANGULAR</option>
+                        </select>
+                        <p class="text-xs">템플릿 해석을 위한 타입을 지정합니다.</p>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label for="template" class="block mb-2 text-sm font-medium text-gray-900">Template Code</label>
+                        <textarea th:field="*{template}" id="template" style="resize: none" rows="12" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500" placeholder="your email template..."></textarea>
+                    </div>
+
+                    <div class="w-full">
+                        <label for="variableNames" class="block mb-2 text-sm font-medium text-gray-900">Variables Name</label>
+                        <input type="text" name="variableNames" id="variableNames" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="authCode" autocomplete="off">
+                        <p class="text-xs">템플릿에 필요한 변수명을 정확하게 입력해주세요. 변수명이 다를 경우, 변수가 올바르게 바인딩되지 않을 수 있습니다.</p>
+                        <button id="variable-names-btn" type="button" class="px-3 py-2 mt-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                            변수명 등록
+                        </button>
+                    </div>
+
+                    <div class="w-full">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-300">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    <span class="sr-only">Edit</span>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody id="variableNamesTable">
+                                <tr th:each="variableName : *{variableNames}" th:id="|variableName-${variableName}|">
+                                    <th scope="row" class="px-3 py-1 font-medium text-gray-900 whitespace-nowrap">
+                                        [[ ${variableName} ]]
+                                    </th>
+                                    <td class="px-3 py-1">
+                                        <button th:id="|variableName-${variableName}-delete-btn|" type="button" class="px-3 py-1 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300">
+                                            삭제
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label for="variables" class="block mb-2 text-sm font-medium text-gray-900">Variables(JSON)</label>
+                        <textarea name="variables" th:text="${sampleVariablesJson}" id="variables" style="resize: none" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500" placeholder="your email template..."></textarea>
+                    </div>
+
+                    <button id="template-parsing-btn" type="button" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                        Parse
+                    </button>
+
+                </div>
+
+
+                <div class="w-full flex justify-end mt-4">
+                    <button type="submit" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-pink-200">
+                  <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                      템플릿 생성
+                  </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="w-3/5">
+            <iframe th:srcdoc="${@thymeleafEmailTemplateResolver.resolveHtml(template.template, template.sampleVariables, template.variableNames)}" id="parsedTemplateFrame" class="w-full h-full py-12 px-4 mx-auto" src="http://localhost:8080/application" sandbox=""></iframe>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        $(document).ready(function(){
+
+          $('#createForm').submit(function (form) {
+            event.preventDefault();
+            var form = $(event.target);
+
+            var name = form.find("[name='name']").val();
+            var templateType = $("[name='templateType']").val();
+            var template = form.find("[name='template']").val();
+
+            var variablesData = $('#variables');
+
+            try {
+              var parsedData = JSON.parse(variablesData.val());
+            } catch(e) {
+              alert("Variables(JSON)의 형식이 올바르지 않습니다.");
+              variablesData.focus();
+              return;
+            }
+
+            var thValues = [];
+            $("#variableNamesTable th").each(function() {
+                var cleanedValue = $(this).html().trim().replace(/\s+/g, ' ');
+                thValues.push(cleanedValue);
+            });
+
+
+            var templateParseComponent = {
+                name: name,
+                templateType: templateType,
+                template: template,
+                sampleVariables: parsedData,
+                variableNames: thValues
+            };
+
+            var createRequestUrl = form.attr('action');
+
+            $.ajax({
+              url: createRequestUrl,
+              type: "POST",
+              contentType: "application/json",
+              data: JSON.stringify(templateParseComponent),
+              success: function(response) {
+                alert("템플릿 수정이 완료되었습니다." )
+                window.location.href = new URL(response, window.location.origin).toString();
+              },
+              error: function(error) {
+                alert("템플릿을 수정에 실패했습니다: " + error.responseText);
+              },
+            });
+
+          });
+
+          $('#template-parsing-btn').click(function(){
+
+            var variablesData = $('#variables');
+            var template = $('#template').val();
+
+            try {
+              var parsedData = JSON.parse(variablesData.val());
+            } catch(e) {
+              alert("Variables(JSON)의 형식이 올바르지 않습니다.");
+              variablesData.focus();
+              return;
+            }
+
+            var thValues = [];
+            $("#variableNamesTable th").each(function() {
+                var cleanedValue = $(this).html().trim().replace(/\s+/g, ' ');
+                thValues.push(cleanedValue);
+            });
+
+
+            var templateParseComponent = {
+                template: template,
+                variables: parsedData,
+                variableNames: thValues
+            };
+
+
+            $.ajax({
+              url: "/application/ajax/resolve/template",
+              type: "POST",
+              contentType: "application/json",
+              data: JSON.stringify(templateParseComponent),
+              success: function(response) {
+                $('#parsedTemplateFrame').attr('srcdoc', response);
+              },
+              error: function(error) {
+                alert("템플릿 파싱에 실패했습니다. " + error.responseText);
+              },
+            });
+          });
+
+
+
+          $('#variable-names-btn').click(function(){
+            var variableName = $('#variableNames').val();
+
+            var newRow = `
+                <tr id="variableName-${variableName}">
+                    <th scope="row" class="px-3 py-1 font-medium text-gray-900 whitespace-nowrap">
+                        ${variableName}
+                    </th>
+                    <td class="px-3 py-1">
+                        <button id="variableName-${variableName}-delete-btn" type="button" class="px-3 py-1 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300">
+                            삭제
+                        </button>
+                    </td>
+                </tr>`;
+
+            $("#variableNamesTable").append(newRow);
+            $('#variableNames').val("");
+
+          });
+
+
+        $(document).on('click', 'button[id$="-delete-btn"]', function() {
+            var trID = $(this).closest('tr').attr('id');
+            $("#" + trID).remove();
+        });
+
+        $("#variableNames").keypress(function(event) {
+            if (event.which == 13) {
+                event.preventDefault();
+                $("#variable-names-btn").click();
+            }
+        });
+
+
+
+        });
+    </script>
+</main>
+</html>

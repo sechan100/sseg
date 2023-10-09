@@ -90,4 +90,37 @@ public class ApplicationService {
         }
         
     }
+    
+    public EmailTemplate getEditableEmailTemplate(String appId, String templateName) {
+        Application application = findByAppId(appId);
+        List<EmailTemplate> emailTemplates = application.getEmailTemplates();
+        Optional<EmailTemplate> templateOptional = emailTemplates.stream().filter(emailTemplate -> emailTemplate.getName().equals(templateName)).findAny();
+        
+        if(templateOptional.isPresent()){
+            return templateOptional.get();
+        } else {
+            throw new IllegalArgumentException(templateName + ": 템플릿이 존재하지 않습니다.");
+        }
+    }
+    
+    @Transactional
+    public boolean editEmailTemplate(String appId, String templateName, EmailTemplateDto templateForm) {
+        Application application = findByAppId(appId);
+        List<EmailTemplate> emailTemplates = application.getEmailTemplates();
+        Optional<EmailTemplate> templateOptional = emailTemplates.stream().filter(emailTemplate -> emailTemplate.getName().equals(templateName)).findAny();
+        
+        if(templateOptional.isPresent()){
+            EmailTemplate emailTemplate = templateOptional.get();
+            emailTemplate.setName(templateForm.getName());
+            emailTemplate.setTemplateType(templateForm.getTemplateType());
+            emailTemplate.setTemplate(templateForm.getTemplate());
+            emailTemplate.setVariableNames(templateForm.getVariableNames());
+            emailTemplate.setSampleVariables(templateForm.getSampleVariables());
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    
 }

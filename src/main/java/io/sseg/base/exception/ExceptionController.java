@@ -17,10 +17,9 @@ public class ExceptionController {
     public ResponseEntity<List<String>> handleValidationErrors(MethodArgumentNotValidException ex) {
         
         List<String> errors = ex.getBindingResult()
-                .getAllErrors()
+                .getFieldErrors()
                 .stream()
-                .map(fieldError -> fieldError.getCode() + ": " + fieldError.getDefaultMessage())
-//                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .map(fieldError -> "'" + fieldError.getField() + "' 변수가 다음 제약조건을 만족시키지 못합니다: " + fieldError.getCode())
                 .collect(Collectors.toList());
         
         return ResponseEntity.badRequest().body(errors);
