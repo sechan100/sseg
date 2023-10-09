@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -72,5 +73,21 @@ public class ApplicationService {
             emailTemplates.add(new EmailTemplate(templateForm));
             return true;
         }
+    }
+    
+    @Transactional
+    public boolean removeEmailTemplate(String appId, String templateName) {
+        Application application = findByAppId(appId);
+        List<EmailTemplate> emailTemplates = application.getEmailTemplates();
+        Optional<EmailTemplate> templateOptional = emailTemplates.stream().filter(emailTemplate -> emailTemplate.getName().equals(templateName)).findAny();
+        
+        if(templateOptional.isPresent()){
+            EmailTemplate emailTemplate = templateOptional.get();
+            emailTemplates.remove(emailTemplate);
+            return true;
+        } else {
+            return false;
+        }
+        
     }
 }

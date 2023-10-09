@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div class="max-w-screen-md mb-8 lg:mb-16">
+        <div class="mx-auto mb-8 lg:mb-16">
 
             <div class="mt-6">
                 <h2 class="text-lg mb-3 font-bold">api key</h2>
@@ -58,11 +58,7 @@
                                 [[ ${app.name} ]]
                             </th>
                             <td class="px-6 py-4">[[ ${app.appId} ]]</td>
-                            <td class="px-6 py-4">
-                                <a>
-                                    재발급
-                                </a>
-                            </td>
+                            <td class="px-6 py-4">[[ ${app.appSecret} ]]</td>
                         </tr>
                         </tbody>
                     </table>
@@ -182,9 +178,9 @@
                                     <a th:href="|/application/${app.appId}/template|" type="button" class="text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2">
                                         수정
                                     </a>
-                                    <a th:href="|/application/${app.appId}/template|" class="text-white bg-gray-600 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">
+                                    <button th:data-app-id="${app.appId}" th:data-tem-name="${tem.name}" onclick="deleteTemplate(this)" class="text-white bg-gray-600 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">
                                         삭제
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                             <iframe th:srcdoc="${@thymeleafEmailTemplateResolver.resolveHtml(tem.template, tem.sampleVariables, tem.variableNames)}" class="absolute block w-full h-full -translate-x-1/2 -translate-y-80 top-1/2 left-1/2" sandbox=""></iframe>
@@ -224,5 +220,16 @@
         </div>
 
     </div>
+    <script th:inline="javascript">
+        function deleteTemplate(element){
+            var appId = element.getAttribute('data-app-id');
+            var temName = element.getAttribute('data-tem-name');
+            var deleteUrl = `/application/${appId}/template/delete?templateName=${temName}`;
+            const result = confirm("정말 삭제하시겠습니까?");
+            if(result){
+                window.location.href = new URL(deleteUrl, window.location.origin).toString();
+            }
+        }
+    </script>
 </main>
 </html>

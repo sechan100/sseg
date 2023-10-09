@@ -71,12 +71,17 @@ public class EmailTemplateController {
     }
     
     
-//
-//    @GetMapping("/{appId}")
-//    public String getApplicationDetail(){
-//
-//        return "/user/application/detail";
-//    }
+
+    @GetMapping("/{appId}/template/delete")
+    @ResponseBody
+    public String getApplicationDetail(@PathVariable String appId, @RequestParam String templateName){
+        
+        boolean isSuccess = applicationService.removeEmailTemplate(appId, templateName);
+        
+        
+        return isSuccess ? rq.historyBack("템플릿이 삭제되었습니다.") : rq.historyBack("템플릿 삭제에 실패했습니다. 다시 시도해주세요.");
+    }
+    
 //
 //    @PostMapping("/{appId}/edit")
 //    public String editApplication(){

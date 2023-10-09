@@ -41,9 +41,8 @@ public class ApplicationController {
         
         String appId = Ut.generator.generateUUID();
         String appSecret = Ut.generator.generateRandomString();
-        String encodedAppSecret = Ut.passwordEncoder.encode(appSecret);
         
-        Long applicationId = applicationService.create(applicationRegistrationForm, appId, encodedAppSecret);
+        Long applicationId = applicationService.create(applicationRegistrationForm, appId, appSecret);
         
         
         return rq.alert("애플리케이션이 등록되었습니다.", "/application");
