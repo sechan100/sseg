@@ -80,7 +80,7 @@ public class ThymeleafEmailTemplateResolver {
                 for (String invalidVariables : onlyInVariables) {
                     sb.append("'").append(invalidVariables).append("'").append(", ");
                 }
-                throw new TemplateParsingException("유효하지 않은 변수가 존재합니다: " + sb.toString());
+                throw new TemplateParsingException("VariableNames로 등록하지 않은 변수가 존재합니다: " + sb.toString());
             }
         }
     }
