@@ -4,6 +4,225 @@
 </head>
 
 <main layout:fragment="main">
-    <h1>디테일 페이지</h1>
+    <div class="mx-auto max-w-screen-xl px-4 lg:px-12 bg-white">
+
+        <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+            <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+                <a th:href="|/application/${app.appId}/template/create|" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-pink-200">
+                  <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                      add email template
+                  </span>
+                </a>
+            </div>
+
+            <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" class="flex items-center text-white px-4 bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" type="button">
+                Apps
+                <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                </svg>
+            </button>
+
+            <!-- app list -->
+            <div id="dropdownHover" class="z-10 bg-gray-100 hidden divide-y divide-gray-600 rounded-lg shadow w-44">
+                <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownHoverButton">
+                    <li th:each="app : ${applications}" class="bg-gray-100">
+                        <a th:href="|/application/${app.appId}|" class="block px-4 py-2 hover:bg-gray-200">[[ ${app.name} ]]</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="max-w-screen-md mb-8 lg:mb-16">
+
+            <div class="mt-6">
+                <h2 class="text-lg mb-3 font-bold">api key</h2>
+
+                <div class="relative overflow-x-auto rounded-lg">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Name
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                AppId
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                AppSecret
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="bg-gray-200 border-b">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                [[ ${app.name} ]]
+                            </th>
+                            <td class="px-6 py-4">[[ ${app.appId} ]]</td>
+                            <td class="px-6 py-4">
+                                <a>
+                                    재발급
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="mt-6">
+                <h2 class="text-lg mb-3 font-bold">SMTP 서버 설정</h2>
+
+                <div class="relative overflow-x-auto rounded-lg">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Host
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Port
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Username
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Password
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="bg-gray-200 border-b">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                [[ ${app.smtpProperties.host} ]]
+                            </th>
+                            <td class="px-6 py-4">[[ ${app.smtpProperties.port} ]]</td>
+                            <td class="px-6 py-4">[[ ${app.smtpProperties.username} ]]</td>
+                            <td class="px-6 py-4">[[ ${app.smtpProperties.password} ]]</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="mt-6">
+                <h2 class="text-lg mb-3 font-bold">이메일 템플릿 preview</h2>
+
+
+                <div id="default-carousel" class="relative w-full border border-2 p-5" data-carousel="static">
+
+                    <!-- Carousel wrapper -->
+                    <div class="relative overflow-hidden rounded-lg" style="height: 800px !important">
+                        <div class="hidden ease-in-out" data-carousel-item>
+                            <iframe height="350" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                                    srcdoc="
+                            <!DOCTYPE html>
+                                <html lang='en' th:with='authenticationUrl = 'http://localhost:8080/''>
+
+                            <head>
+                                <meta charset='UTF-8'>
+                                <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+                                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                                <title>emailAutheitcation mail</title>
+                            </head>
+
+                            <body style='font-family: Arial, sans-serif;'>
+                            <div style='width: 100%; max-width: 600px; margin: auto; background-color: #f4f4f4; padding: 20px;'>
+                                <h1 style='font-size: 24px;'>SSEG</h1>
+                                <p style='font-size: 16px;'>sseg에 가입해주셔서 감사합니다. <br> 아래의 '계속하기' 버튼을 눌러 이메일을 인증하고 회원가입을 완료해주세요.</p>
+
+                                <!-- 버튼 -->
+                                <a th:href='${authenticationUrl}' style='background-color: #00E0D8; color: white; padding: 14px 20px; margin: 15px 0; border: none; cursor: pointer; width: 50%; text-align: center; display: inline-block;'>계속하기</a>
+
+                                <!-- 실제 이메일 링크 -->
+                                <p style='font-size: 16px;'>위 버튼이 작동하지 않거나, 다른 다른 디바이스에서 링크를 여시려면 다음 링크를 사용해주세요. <br> 해당 링크는 1시간 동안 유효합니다.</p>
+                                <p style='font-size: 16px;'>
+                                    <a th:href='${authenticationUrl}' th:text='${authenticationUrl}' style='color: blue;'></a>
+                                </p>
+                            </div>
+                            </body>
+                            </html>"></iframe>
+                        </div>
+                        <div class="hidden ease-in-out" data-carousel-item>
+                            <iframe height="350" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                                    srcdoc="
+                            <!DOCTYPE html>
+                                <html lang='en' th:with='authenticationUrl = 'http://localhost:8080/''>
+
+                            <head>
+                                <meta charset='UTF-8'>
+                                <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+                                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                                <title>emailAutheitcation mail</title>
+                            </head>
+
+                            <body style='font-family: Arial, sans-serif;'>
+                            <div style='width: 100%; max-width: 600px; margin: auto; background-color: #f4f4f4; padding: 20px;'>
+                                <h1 style='font-size: 24px;'>SSEG</h1>
+                                <p style='font-size: 16px;'>sseg에 가입해주셔서 감사합니다. <br> 아래의 '계속하기' 버튼을 눌러 이메일을 인증하고 회원가입을 완료해주세요.</p>
+
+                                <!-- 버튼 -->
+                                <a th:href='${authenticationUrl}' style='background-color: #00E0D8; color: white; padding: 14px 20px; margin: 15px 0; border: none; cursor: pointer; width: 50%; text-align: center; display: inline-block;'>계속하기</a>
+
+                                <!-- 실제 이메일 링크 -->
+                                <p style='font-size: 16px;'>위 버튼이 작동하지 않거나, 다른 다른 디바이스에서 링크를 여시려면 다음 링크를 사용해주세요. <br> 해당 링크는 1시간 동안 유효합니다.</p>
+                                <p style='font-size: 16px;'>
+                                    <a th:href='${authenticationUrl}' th:text='${authenticationUrl}' style='color: blue;'></a>
+                                </p>
+                            </div>
+                            </body>
+                            </html>"></iframe>
+                        </div>
+
+                        <div th:each="tem : ${app.emailTemplates}" class="hidden ease-in-out" data-carousel-item>
+                            <div class="flex justify-evenly items-center">
+                                <div class="text-gray-700 text-lg border border-1 px-3 py-1">[[ ${tem.name} ]]</div>
+                                <div>
+                                    <a th:href="|/application/${app.appId}/template|" type="button" class="text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                                        수정
+                                    </a>
+                                    <a th:href="|/application/${app.appId}/template|" class="text-white bg-gray-600 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">
+                                        삭제
+                                    </a>
+                                </div>
+                            </div>
+                            <iframe th:srcdoc="${@thymeleafEmailTemplateResolver.resolveHtml(tem.template, tem.sampleVariables, tem.variableNames)}" class="absolute block w-full h-full -translate-x-1/2 -translate-y-80 top-1/2 left-1/2" sandbox=""></iframe>
+                        </div>
+                    </div>
+
+                    <!-- Slider indicators -->
+                    <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
+                        <button type="button" class="w-3 h-3 rounded-full" th:data-carousel-slide-to="1"></button>
+                        <button type="button" class="w-3 h-3 rounded-full" th:data-carousel-slide-to="2"></button>
+                        <button th:if="${app.emailTemplates.size()} > 0" th:each="num : ${#numbers.sequence(3, 2 + app.emailTemplates.size())}" type="button" class="w-3 h-3 rounded-full" th:data-carousel-slide-to="${num}"></button>
+                    </div>
+
+                    <!-- Slider controls -->
+                    <button type="button" class="absolute opacity-20 hover:opacity-100 top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+                        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
+                            <svg class="w-4 h-4 text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                            </svg>
+                            <span class="sr-only">Previous</span>
+                        </span>
+                    </button>
+
+                    <button type="button" class="absolute opacity-20 hover:opacity-100 top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+                        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white group-focus:outline-none">
+                            <svg class="w-4 h-4 text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                            </svg>
+                            <span class="sr-only">Next</span>
+                        </span>
+                    </button>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
 </main>
 </html>

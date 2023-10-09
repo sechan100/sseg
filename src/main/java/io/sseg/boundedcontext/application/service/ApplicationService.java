@@ -61,9 +61,10 @@ public class ApplicationService {
     
     @Transactional
     public boolean addEmailTemplate(String appId, EmailTemplateDto templateForm) {
+        
         Application application = findByAppId(appId);
         List<EmailTemplate> emailTemplates = application.getEmailTemplates();
-        boolean isExistName = emailTemplates.stream().allMatch(emailTemplate -> emailTemplate.getName().equals(templateForm.getName()));
+        boolean isExistName = emailTemplates.stream().anyMatch(emailTemplate -> emailTemplate.getName().equals(templateForm.getName()));
         
         if(isExistName){
             return false;

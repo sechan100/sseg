@@ -4,70 +4,153 @@
 </head>
 
 <main layout:fragment="main">
-    <form th:action="@{/application/create}" method="post" th:object="${form}">
-        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
+    <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+        <h2 class="mb-4 text-xl font-bold text-gray-900">Add a new Application</h2>
 
-            <div class="-mx-3 md:flex mb-6">
-                <div class="md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-first-name">
-                       애플리케이션 이름
-                    </label>
-                    <input type="text" th:field="*{name}" placeholder="ex) sseg application" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3" id="grid-first-name">
-                    <p class="text-red text-xs italic">사용자의 애플리케이션 관리를 위한 이름으로, appId, appSecret과는 무관합니다.</p>
+        <form id="createForm" th:action="@{/application/create}" method="post" th:object="${form}">
+            <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+
+                <div class="w-full">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Application Name</label>
+                    <input type="text" th:field="*{name}" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="sseg application" autocomplete="off" required="">
+                    <p class="text-xs">사용자의 애플리케이션 관리를 위한 이름으로, appId, appSecret과는 무관합니다.</p>
                 </div>
 
-                <div class="md:w-1/2 px-3">
-                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-last-name">
-                        도메인 이름
-                    </label>
-                    <input id="grid-last-name" type="text" th:field="*{domain}" placeholder="sseg.io" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4">
-                    <p class="text-red text-xs italic">실제 SMTP 서버 도메인과는 관계가 없으며, 전송자 정보를 구성하기위한 정보로써 사용됩니다.</p>
-                </div>
-            </div>
-
-            <div class="-mx-3 md:flex mb-2">
-                <div class="md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-city">
-                        host: 호스트 도메인
-                    </label>
-                    <input th:field="*{smtpProperties.host}" id="grid-city" type="text" placeholder="ex) smtp-relay.sendinblue.com" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4">
+                <div class="w-full">
+                    <label for="domain" class="block mb-2 text-sm font-medium text-gray-900">Domain</label>
+                    <input type="text" th:field="*{domain}" id="domain" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="sseg.io" autocomplete="off" required="">
+                    <p class="text-xs">사용하는 SMTP 서버 도메인과는 관계가 없으며, 전송자 정보를 구성하기위한 정보로써 사용됩니다.</p>
                 </div>
 
-                <div class="md:w-1/2 px-3">
-                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-state">
-                        port: 포트번호
-                    </label>
-                    <input th:field="*{smtpProperties.port}" id="grid-state" type="number" placeholder="ex) 587" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4">
+                <div class="sm:col-span-2 grid gap-4 sm:grid-cols-2 sm:gap-6 border border-1 border-gray-600 p-5">
+                    <h3 class="sm:col-span-2">SMTP 서버 정보 설정</h3>
+                    <div class="w-full">
+                        <label for="smtp-host" class="block mb-2 text-sm font-medium text-gray-900">Host</label>
+                        <input type="text" th:field="*{smtpProperties.host}" id="smtp-host" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="smtp-relay.sendinblue.com" required="">
+                    </div>
+
+                    <div class="w-full">
+                        <label for="smtp-port" class="block mb-2 text-sm font-medium text-gray-900">Port</label>
+                        <input type="text" th:field="*{smtpProperties.port}" id="smtp-port" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="587" required="">
+                    </div>
+
+                    <div class="w-full">
+                        <label for="smtp-username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
+                        <input type="text" th:field="*{smtpProperties.username}" id="smtp-username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="sseg2023" required="">
+                    </div>
+
+                    <div class="w-full">
+                        <label for="smtp-password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+                        <input type="text" th:field="*{smtpProperties.password}" id="smtp-password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="J2kdjfDF9dfgT_dg__dfhjAQPef" required="">
+                    </div>
                 </div>
 
-                <div class="md:w-1/2 px-3">
-                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="smtpUsername">
-                        username
-                    </label>
-                    <input th:field="*{smtpProperties.username}" id="smtpUsername" type="text" placeholder="ex) sseg2023 or sseg2023@gmail.com" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4">
-                </div>
-
-                <div class="md:w-1/2 px-3">
-                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="smtpPassword">
-                        password
-                    </label>
-                    <input th:field="*{smtpProperties.password}" id="smtpPassword" type="text" placeholder="28dbnDJgbu4bjd19dnbJjdbJDJF" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4">
+                <div class="sm:col-span-2">
+                    <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Description</label>
+                    <textarea th:field="*{description}" id="description" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500" placeholder="to build MSA server architecture, separare email and sms server. This is not a ownly SMTP server, but gateway that ease send email and sms by using sseg client lib."></textarea>
                 </div>
             </div>
 
-            <div class="-mx-3 md:flex mb-6">
-                <div class="md:w-full px-3">
-                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-password">
-                        설명
-                    </label>
-                    <input th:field="*{description}" id="grid-password" type="text" placeholder="설명을 작성해주세요..." class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3">
-                    <p class="text-grey-dark text-xs italic">애플리케이션에 관한 설명을 입력해주세요. (선택)</p>
-                </div>
+            <div class="w-full flex justify-end mt-4">
+                <button type="submit" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white focus:ring-4 focus:outline-none focus:ring-pink-200">
+                  <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                      APP 등록하기
+                  </span>
+                </button>
             </div>
+        </form>
+    </div>
 
-        </div>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('#createForm').submit(function (form) {
+                createFormSubmit(form);
+            });
+        });
 
-        <input type="submit" value="등록하기" class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded">
-    </form>
+        function createFormSubmit(event) {
+            event.preventDefault();
+
+            var form = $(event.target);
+
+            var name = form.find("[name='name']");
+            name.val($.trim(name.val()));
+            if (name.val().length === 0) {
+                alert('이름을 입력해주세요.');
+                name.focus();
+                return;
+            }
+
+            var domain = form.find("[name='domain']");
+            domain.val($.trim(domain.val()));
+            if (domain.val().length === 0) {
+                alert('도메인을 입력해주세요.');
+                domain.focus();
+                return;
+            }
+            if(isValidDomain()){
+                alert('도메인 형식이 올바르지 않습니다.');
+                domain.focus();
+                return;
+            }
+
+            var smtpProperties_host = form.find("[name='smtpProperties.host']");
+            smtpProperties_host.val($.trim(smtpProperties_host.val()));
+            if (smtpProperties_host.val().length === 0) {
+                alert('smtp host를 입력해주세요.');
+                smtpProperties_host.focus();
+                return;
+            }
+            if(isValidDomain()){
+                alert('smtp host 형식이 올바르지 않습니다.');
+                smtpProperties_host.focus();
+                return;
+            }
+
+            var smtpProperties_port = form.find("[name='smtpProperties.port']");
+            smtpProperties_port.val($.trim(smtpProperties_port.val()));
+            if (!isNumeric(smtpProperties_port.val())) {
+                alert('smtp port가 작성되지 않았거나, 수가 아닙니다.');
+                smtpProperties_port.focus();
+                return;
+            }
+
+            var smtpProperties_username = form.find("[name='smtpProperties.username']");
+            smtpProperties_username.val($.trim(smtpProperties_username.val()));
+            if (smtpProperties_username.val().length === 0) {
+                alert('smtp username을 입력해주세요.');
+                smtpProperties_username.focus();
+                return;
+            }
+
+
+            var smtpProperties_password = form.find("[name='smtpProperties.password']");
+            smtpProperties_password.val($.trim(smtpProperties_password.val()));
+            if (smtpProperties_password.val().length === 0) {
+                alert('smtp password를 입력해주세요.');
+                smtpProperties_password.focus();
+                return;
+            }
+
+            var description = form.find("#description");
+            description.val($.trim(description.val()));
+            if (description.val().length === 0) {
+                alert('설명을 입력해주세요.');
+                description.focus();
+                return;
+            }
+
+            form.get(0).submit();
+        }
+
+        function isValidDomain(domain) {
+          const domainPattern = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$/;
+          return domainPattern.test(domain);
+        }
+
+        function isNumeric(value) {
+          return !isNaN(parseFloat(value)) && isFinite(value);
+        }
+    </script>
 </main>
 </html>

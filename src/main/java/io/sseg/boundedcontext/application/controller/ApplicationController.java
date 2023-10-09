@@ -46,7 +46,7 @@ public class ApplicationController {
         Long applicationId = applicationService.create(applicationRegistrationForm, appId, encodedAppSecret);
         
         
-        return "redirect:/application";
+        return rq.alert("애플리케이션이 등록되었습니다.", "/application");
     }
     
     
@@ -66,9 +66,10 @@ public class ApplicationController {
     public String getApplicationDetail(@PathVariable String appId, Model model){
         
         Application application = applicationService.findByAppId(appId);
+        List<Application> applications = applicationService.findAllByOwnerId(rq.getAccountPrincipal().getId());
         
-        
-        model.addAttribute("application", application);
+        model.addAttribute("applications", applications);
+        model.addAttribute("app", application);
         
         
         return "/user/application/detail";

@@ -16,7 +16,7 @@ import java.lang.reflect.Parameter;
 @Component
 @RequiredArgsConstructor
 @Aspect
-public class AccessAllowedAspect {
+public class AppAccessAllowedAspect {
     
     private final Rq rq;
     

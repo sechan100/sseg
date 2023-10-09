@@ -19,7 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,9 +49,15 @@ public class ApiEmailController {
                 .findAny()
         );
         
+        List variableNames = application.getEmailTemplates()
+                .stream()
+                .filter(t -> t.getName().equals(request.getTemplateName()))
+                .map(EmailTemplate::getVariableNames)
+                .toList();
+        
         
         try {
-            template = templateResolver.resolveHtml(template, request.getTemplateArgs());
+            template = templateResolver.resolveHtml(template, request.getTemplateArgs(), variableNames);
             
             // thymeleaf exception
         } catch (Exception e) {

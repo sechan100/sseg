@@ -4,7 +4,78 @@
 </head>
 
 <main layout:fragment="main">
-    <h1>메인 화면</h1>
-    <a href="/login">로그인 페이지</a>
+    <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+        <div class="bg-white">
+            <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+                <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+                    <a th:href="@{/application/create}" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200">
+                      <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                          add Application
+                      </span>
+                    </a>
+                </div>
+
+                <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" class="flex items-center text-white px-4 bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" type="button">
+                    Apps
+                    <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                </button>
+
+                <!-- app list -->
+                <div id="dropdownHover" class="z-10 bg-gray-100 hidden divide-y divide-gray-600 rounded-lg shadow w-44">
+                    <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownHoverButton">
+                        <li th:each="app : ${applications}" class="bg-gray-100">
+                            <a th:href="|/application/${app.appId}|" class="block px-4 py-2 hover:bg-gray-200">[[ ${app.name} ]]</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500 ">
+
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+                    <tr>
+                        <th scope="col" class="px-4 py-3">App Name</th>
+                        <th scope="col" class="px-4 py-3">Domain</th>
+                        <th scope="col" class="px-4 py-3" colspan="4">Description</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr class="border-b" th:each="app : ${applications}">
+                        <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">
+                            [[ ${app.name} ]]
+                        </th>
+                        <td class="px-4 py-3">[[ ${app.domain} ]]</td>
+                        <td class="px-4 py-3">[[ ${app.description} ]]</td>
+                        <td class="px-4 py-3 flex items-center justify-end">
+                            <button id="apple-imac-27-dropdown-button" data-dropdown-toggle="apple-imac-27-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none ">
+                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                                </svg>
+                            </button>
+                            <div id="apple-imac-27-dropdown" class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow ">
+                                <ul class="py-1 text-sm text-gray-700 ">
+                                    <li>
+                                        <a th:href="|/application/${app.appId}|" class="block py-2 px-4 hover:bg-gray-100 ">Show</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block py-2 px-4 hover:bg-gray-100 ">Edit</a>
+                                    </li>
+                                </ul>
+                                <div class="py-1">
+                                    <a href="#" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 ">Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </main>
 </html>

@@ -120,11 +120,11 @@ public class Rq {
     }
     
     public String alert(String msg, String redirectUrl){
-        return "<script>alert.html('" + msg + "'); location.href='" + redirectUrl + "';</script>";
+        return "<script>alert('" + msg + "'); location.href='" + redirectUrl + "';</script>";
     }
     
     public String historyBack(String msg){
-        return "<script>alert.html('" + msg + "'); history.back();</script>";
+        return "<script>alert('" + msg + "'); history.back();</script>";
     }
     
     public void redirect(String redirectUrl) {
