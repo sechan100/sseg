@@ -24,6 +24,7 @@ public class ApplicationService {
     private final Rq rq;
     
     
+    
     public List<Application> findAllByOwnerId(Long ownerId) {
         
         return applicationRepository.findByOwnerId(ownerId);
@@ -48,19 +49,23 @@ public class ApplicationService {
         return application.getId();
     }
     
+    
     public Application findById(Long applicationId) {
         return applicationRepository.findById(applicationId).orElseThrow();
     }
     
+    
     public Application findByAppId(String appId) {
         return applicationRepository.findByAppId(appId);
     }
+    
     
     @Transactional
     public void saveRefreshToken(String appId, String refreshToken) {
         Application application = findByAppId(appId);
         application.setRefreshToken(refreshToken);
     }
+    
     
     @Transactional
     public boolean addEmailTemplate(String appId, EmailTemplateDto templateForm) {
@@ -76,6 +81,7 @@ public class ApplicationService {
             return true;
         }
     }
+    
     
     @Transactional
     public boolean removeEmailTemplate(String appId, String templateName) {
@@ -93,6 +99,7 @@ public class ApplicationService {
         
     }
     
+    
     public EmailTemplate getEditableEmailTemplate(String appId, String templateName) {
         Application application = findByAppId(appId);
         List<EmailTemplate> emailTemplates = application.getEmailTemplates();
@@ -104,6 +111,7 @@ public class ApplicationService {
             throw new IllegalArgumentException(templateName + ": 템플릿이 존재하지 않습니다.");
         }
     }
+    
     
     @Transactional
     public boolean editEmailTemplate(String appId, String templateName, EmailTemplateDto templateForm) {
@@ -135,5 +143,16 @@ public class ApplicationService {
         } catch (Exception e) {
             return false;
         }
+    }
+    
+    @Transactional
+    public boolean updateAppSecret(String appId, String newAppSecret) {
+            try {
+                Application application = findByAppId(appId);
+                application.setAppSecret(newAppSecret);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
     }
 }

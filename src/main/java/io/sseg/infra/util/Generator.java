@@ -16,12 +16,14 @@ public class Generator {
     
     public String generateRandomString() {
         
-        String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-";
+        String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.!~*";
+        
         SecureRandom RANDOM = new SecureRandom();
+        int randomStringLength = 25;
         
-        StringBuilder result = new StringBuilder(15);
+        StringBuilder result = new StringBuilder(randomStringLength);
         
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < randomStringLength; i++) {
             int randomIndex = RANDOM.nextInt(CHARACTERS.length());
             result.append(CHARACTERS.charAt(randomIndex));
         }

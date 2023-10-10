@@ -29,7 +29,8 @@ public class ApplicationController {
     private final ApplicationService applicationService;
     
     
-    // 등록
+    
+    // 등록 form
     @GetMapping("/application/create")
     public String getApplicationRegisterForm(Model model){
         
@@ -37,6 +38,7 @@ public class ApplicationController {
         
         return "/user/application/create";
     }
+    
     
     // 등록 proc
     @PostMapping("/application/create")
@@ -52,6 +54,7 @@ public class ApplicationController {
         return rq.alert("애플리케이션이 등록되었습니다.", "/application");
     }
     
+    
     // 리스트
     @GetMapping("/application")
     public String getApplicationList(Model model){
@@ -62,6 +65,7 @@ public class ApplicationController {
         
         return "/user/application/list";
     }
+    
     
     // 상세
     @GetMapping("/application/{appId}")
@@ -77,6 +81,7 @@ public class ApplicationController {
         return "/user/application/detail";
     }
     
+    
     // smtp 서버 정보 수정
     @PostMapping("/ajax/application/{appId}/smtpProperties")
     @ResponseBody
@@ -86,6 +91,20 @@ public class ApplicationController {
             return ResponseEntity.ok(new ObjectMapper().writeValueAsString(smtpProperties));
         } else {
             return ResponseEntity.badRequest().body("SMTP 서버 정보 수정에 실패했습니다.");
+        }
+    }
+    
+    
+    // 애플리케이션 시크릿 키 재발급
+    @GetMapping("/ajax/application/{appId}/regenerateAppSecret")
+    public ResponseEntity<String> regenerateAppSecret(@PathVariable String appId){
+        
+        String newAppSecret = Ut.generator.generateRandomString();
+        
+        if(applicationService.updateAppSecret(appId, newAppSecret)){
+            return ResponseEntity.ok(newAppSecret);
+        } else {
+            return ResponseEntity.badRequest().body("애플리케이션 시크릿 키 재발급에 실패했습니다.");
         }
     }
 }
