@@ -4,6 +4,7 @@ package io.sseg.boundedcontext.application.service;
 import io.sseg.base.request.Rq;
 import io.sseg.boundedcontext.application.entity.Application;
 import io.sseg.boundedcontext.application.entity.EmailTemplate;
+import io.sseg.boundedcontext.application.entity.SMTPProperties;
 import io.sseg.boundedcontext.application.model.ApplicationDto;
 import io.sseg.boundedcontext.application.model.EmailTemplateDto;
 import io.sseg.boundedcontext.application.repository.ApplicationRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -123,4 +125,15 @@ public class ApplicationService {
     }
     
     
+    @Transactional
+    public boolean updateSmtp(String appId, SMTPProperties smtpProperties) {
+        
+        try {
+            Application application = findByAppId(appId);
+            application.setSmtpProperties(smtpProperties);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

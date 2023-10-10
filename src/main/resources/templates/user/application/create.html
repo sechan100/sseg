@@ -22,6 +22,7 @@
                     <p class="text-xs">사용하는 SMTP 서버 도메인과는 관계가 없으며, 전송자 정보를 구성하기위한 정보로써 사용됩니다.</p>
                 </div>
 
+                <!--SMTP 서버 정보 설정-->
                 <div class="sm:col-span-2 grid gap-4 sm:grid-cols-2 sm:gap-6 border border-1 border-gray-600 p-5">
                     <h3 class="sm:col-span-2">SMTP 서버 정보 설정</h3>
                     <div class="w-full">
@@ -43,6 +44,10 @@
                         <label for="smtp-password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
                         <input type="text" th:field="*{smtpProperties.password}" id="smtp-password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="J2kdjfDF9dfgT_dg__dfhjAQPef" required="">
                     </div>
+
+<!--                    <button type="button" class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">-->
+<!--                        테스트 이메일 발송-->
+<!--                    </button>-->
                 </div>
 
                 <div class="sm:col-span-2">

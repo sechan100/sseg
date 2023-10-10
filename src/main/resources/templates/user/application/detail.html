@@ -67,7 +67,12 @@
 
 
             <div class="mt-6">
-                <h2 class="text-lg mb-3 font-bold">SMTP 서버 설정</h2>
+                <div class="flex justify-start items-center">
+                    <h2 class="text-lg mb-3 font-bold">SMTP 서버 설정</h2>
+
+                    <button type="button" onclick="smtpPropertiesEditMode(this)" id="smtpPropertiesEditModeBtn" class="px-3 ml-4 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">수정</button>
+                    <button type="button" th:data-app-id="${app.appId}" onclick="smtpPropertiesSave(this)" id="smtpPropertiesSaveBtn" class="hidden px-3 ml-4 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">저장</button>
+                </div>
 
                 <div class="relative overflow-x-auto rounded-lg">
                     <table class="w-full text-sm text-left text-gray-500">
@@ -87,16 +92,32 @@
                             </th>
                         </tr>
                         </thead>
+                        <form id="smtpPropertiesEditForm" action="#" method="post">
                         <tbody>
-                        <tr class="bg-gray-200 border-b">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        <tr id="smtpPropertiesViewRow" class="bg-gray-200 border-b">
+                            <th id="smtpPropertiesViewRow-host" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                 [[ ${app.smtpProperties.host} ]]
                             </th>
-                            <td class="px-6 py-4">[[ ${app.smtpProperties.port} ]]</td>
-                            <td class="px-6 py-4">[[ ${app.smtpProperties.username} ]]</td>
-                            <td class="px-6 py-4">[[ ${app.smtpProperties.password} ]]</td>
+                            <td id="smtpPropertiesViewRow-port" class="px-6 py-4">[[ ${app.smtpProperties.port} ]]</td>
+                            <td id="smtpPropertiesViewRow-username" class="px-6 py-4">[[ ${app.smtpProperties.username} ]]</td>
+                            <td id="smtpPropertiesViewRow-password" class="px-6 py-4">[[ ${app.smtpProperties.password} ]]</td>
+                        </tr>
+                        <tr id="smtpPropertiesEditRow" class="hidden bg-gray-200 border-b">
+                            <td class="px-6 py-4">
+                                <input type="text" name="host" th:value="${app.smtpProperties.host}">
+                            </td>
+                            <td class="px-6 py-4">
+                                <input type="text" name="port" th:value="${app.smtpProperties.port}">
+                            </td>
+                            <td class="px-6 py-4">
+                                <input type="text" name="username" th:value="${app.smtpProperties.username}">
+                            </td>
+                            <td class="px-6 py-4">
+                                <input type="text" name="password" th:value="${app.smtpProperties.password}">
+                            </td>
                         </tr>
                         </tbody>
+                        </form>
                     </table>
                 </div>
             </div>
@@ -229,6 +250,73 @@
             if(result){
                 window.location.href = new URL(deleteUrl, window.location.origin).toString();
             }
+        }
+
+
+        // smtp 서버 정보 수정모드에 진입하는 함수
+        function smtpPropertiesEditMode(element){
+
+            var smtpPropertiesEditModeBtn = $(element);
+
+            // 수정 버튼 숨기고, 저장 버튼 표시 (수정 <-> 저장)
+            var smtpPropertiesSaveBtn = $('#smtpPropertiesSaveBtn');
+            smtpPropertiesEditModeBtn.toggleClass('hidden');
+            smtpPropertiesSaveBtn.toggleClass('hidden');
+
+            // 수정 테이블 행 보이기
+            $('#smtpPropertiesEditRow').toggleClass('hidden');
+
+            // 기존 표시되던 값들은 숨기기
+            $('#smtpPropertiesViewRow').toggleClass('hidden');
+
+        }
+
+        // smtp 서버 정보 수정본 저장 함수
+        function smtpPropertiesSave(element){
+
+            var isEditDone = confirm('정말 수정하시겠습니까?');
+
+            var smtpPropertiesSaveBtn = $(element);
+            var appId = smtpPropertiesSaveBtn.attr('data-app-id');
+            var smtpPropertiesEditModeBtn = $('#smtpPropertiesEditModeBtn');
+
+            // 수정 버튼 숨기고, 저장 버튼 표시 (수정 <-> 저장)
+            smtpPropertiesSaveBtn.toggleClass('hidden');
+            smtpPropertiesEditModeBtn.toggleClass('hidden');
+
+            // 수정 테이블 행 보이기
+            $('#smtpPropertiesEditRow').toggleClass('hidden');
+
+            // 기존 표시되던 값들은 숨기기
+            $('#smtpPropertiesViewRow').toggleClass('hidden');
+
+            if(!isEditDone){
+                return;
+            }
+
+            var formData = $('#smtpPropertiesEditForm').serializeArray();
+            var formDataObj = {};
+            for (var i = 0; i < formData.length; i++) {
+                formDataObj[formData[i].name] = formData[i].value;
+            }
+
+
+            $.ajax({
+                url: `/ajax/application/${appId}/smtpProperties`,
+                type: 'POST',
+                contentType: 'application/json',
+                data:  JSON.stringify(formDataObj),
+                success: (response) => {
+                    alert("수정이 완료되었습니다.")
+                    const smtpPropertiesResponse = JSON.parse(response);
+                    $('#smtpPropertiesViewRow-host').text(smtpPropertiesResponse.host);
+                    $('#smtpPropertiesViewRow-port').text(smtpPropertiesResponse.port);
+                    $('#smtpPropertiesViewRow-username').text(smtpPropertiesResponse.username);
+                    $('#smtpPropertiesViewRow-password').text(smtpPropertiesResponse.password);
+                },
+                error: (error) => { alert(error.responseText)}
+            });
+
         }
     </script>
 </main>
