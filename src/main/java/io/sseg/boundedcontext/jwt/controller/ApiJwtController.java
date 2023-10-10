@@ -46,7 +46,7 @@ public class ApiJwtController {
         }
         
         // 애플리케이션의 appSecret 불일치
-        if(!Ut.passwordEncoder.matches(appSecret, application.getAppSecret())){
+        if(!application.getAppSecret().equals(appSecret)){
             return ApiResponse.unauthorized(SsegApiResponseStatus.INVALID_APP_SECRET);
         }
         
@@ -75,7 +75,7 @@ public class ApiJwtController {
         
         // 가져온 application 엔티티의 refresh token과의 일치여부 체크
         if(!tokenDto.getToken().equals(application.getRefreshToken())){
-            return ApiResponse.unauthorized(SsegApiResponseStatus.INVALID_APP_SECRET);
+            return ApiResponse.unauthorized(SsegApiResponseStatus.INVALID_REFRESH_TOKEN);
         }
         
         // access token 토큰 생성

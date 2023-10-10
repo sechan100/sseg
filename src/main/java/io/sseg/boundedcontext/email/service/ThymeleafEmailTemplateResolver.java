@@ -69,7 +69,8 @@ public class ThymeleafEmailTemplateResolver {
                 for (String omitedVariables : onlyInVariableNames) {
                     sb.append("'").append(omitedVariables).append("'").append(", ");
                 }
-                throw new TemplateParsingException("템플릿에 필요한 변수가 누락되었습니다: " + sb.toString());
+                String omitedVariablesString = sb.substring(0, sb.length() - 2);
+                throw new TemplateParsingException("A required variable is missing from the template: " + omitedVariablesString);
             }
             
             // variables에만 있는 키 찾기
@@ -80,7 +81,8 @@ public class ThymeleafEmailTemplateResolver {
                 for (String invalidVariables : onlyInVariables) {
                     sb.append("'").append(invalidVariables).append("'").append(", ");
                 }
-                throw new TemplateParsingException("VariableNames로 등록하지 않은 변수가 존재합니다: " + sb.toString());
+                String invalidVariablesString = sb.substring(0, sb.length() - 2);
+                throw new TemplateParsingException("A variable exists that is not registered in the template: " + invalidVariablesString);
             }
         }
     }
