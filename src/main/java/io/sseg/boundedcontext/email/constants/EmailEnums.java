@@ -1,4 +1,4 @@
-package io.sseg.boundedcontext.email;
+package io.sseg.boundedcontext.email.constants;
 
 public class EmailEnums {
     

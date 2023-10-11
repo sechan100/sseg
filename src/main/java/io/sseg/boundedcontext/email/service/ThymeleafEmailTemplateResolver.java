@@ -82,7 +82,7 @@ public class ThymeleafEmailTemplateResolver {
                     sb.append("'").append(invalidVariables).append("'").append(", ");
                 }
                 String invalidVariablesString = sb.substring(0, sb.length() - 2);
-                throw new TemplateParsingException("A variable exists that is not registered in the template: " + invalidVariablesString);
+                throw new TemplateParsingException("Variables that are not registered in the template exists: " + invalidVariablesString);
             }
         }
     }

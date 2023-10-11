@@ -22,7 +22,7 @@ public class EmailSendService {
     private final JavaMailSender buildInJavaMailSender;
     
     
-    public void sendMail(EmailRequest request, String template, SMTPProperties smtpProperties) {
+    public void sendMail(EmailRequest request, String template, SMTPProperties smtpProperties) throws MessagingException, MailException {
         
         JavaMailSender javaMailSender;
         
@@ -50,14 +50,20 @@ public class EmailSendService {
             
         } catch (MessagingException e) {
             log.info("Fail To Send Email!");
+            throw e;
             
         } catch (MailException e) {
             log.info("Fail To Send Email For Authentication!");
+            throw e;
         }
     }
     
     public void sendMail(EmailRequest request, String template) {
-        sendMail(request, template, null);
+        try {
+            sendMail(request, template, null);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
     
     

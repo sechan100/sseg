@@ -22,7 +22,7 @@ public class ApiResponse<T> {
         this.data = data;
         this.status = status;
         
-        this.msg = Objects.requireNonNullElse(msg, "provided additional message is null.");
+        this.msg = Objects.requireNonNullElse(msg, null);
     }
     
     // 200 ok
