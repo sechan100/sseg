@@ -2,7 +2,7 @@ server:
   port: 8080
 
 jwt:
-  expirationPeriodMinutes: 30
+  expirationPeriodMinutes: 1
   refresh:
     expirationPeriodDay: 7
 

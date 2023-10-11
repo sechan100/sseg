@@ -25,8 +25,7 @@ public enum SsegApiResponseStatus {
         , TEMPLATE_NOT_FOUND(20101, "Template not found. Template finded by your templateName is null.")
     
     , UNAUTHORIZED(30, "Unauthorized")
-        , ACCESS_TOKEN_EXPIRED(30100, "Access token expired")
-        , REFRESH_TOKEN_EXPIRED(30101, "Refresh token expired")
+        , TOKEN_EXPIRED(30100, "Access token expired")
         , INVALID_ACCESS_TOKEN(30102, "Invalid access token")
         , INVALID_TOKEN_TYPE(30103, "Token type is invalid. You may have sent a different type of token.")
     

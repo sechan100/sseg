@@ -1,6 +1,7 @@
 package io.sseg.base.request;
 
 import io.sseg.base.entity.UserOwnable;
+import io.sseg.boundedcontext.application.entity.Application;
 import io.sseg.boundedcontext.jwt.model.JwtTokenDto;
 import io.sseg.boundedcontext.user.entity.Account;
 import io.sseg.boundedcontext.user.model.dto.AccountPrincipal;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 
 
 @Component
@@ -135,15 +137,11 @@ public class Rq {
         }
     }
     
-    public <T extends UserOwnable> void isAccessAllowed(Object arg, String argFieldName, Class<T> clazz) {
+    public <T extends UserOwnable> void isAccessAllowed(Long id, Class<T> clazz) {
         
         JpaRepository<UserOwnable, Long> repository = null;
         Method findMethod = null;
         
-        
-        if(arg == null) {
-            throw new NullPointerException("소유권 확인 대상 엔티티를 특정할 Unique 칼럼 값이 존재하지 않습니다.");
-        }
         
         if(clazz != null) {
             String className = clazz.getSimpleName();
@@ -151,16 +149,16 @@ public class Rq {
             repository = (JpaRepository<UserOwnable, Long>) context.getBean(beanName);
             
             try {
-                findMethod = repository.getClass().getMethod("findBy" + StringUtils.capitalize(argFieldName));
+                findMethod = repository.getClass().getMethod("findById", Object.class);
             } catch(NoSuchMethodException e) {
-                throw new RuntimeException("findBy* 메소드를 찾을 수 없습니다");
+                throw new RuntimeException("findById 메소드를 찾을 수 없습니다");
             }
         }
         
         
         UserOwnable targetEntity = null;
         try {
-            targetEntity = (UserOwnable) findMethod.invoke(repository, arg);
+            targetEntity = (UserOwnable) ((Optional)findMethod.invoke(repository, id)).orElseThrow();
         } catch(Exception e) {
             throw new RuntimeException(e);
         }
@@ -171,8 +169,10 @@ public class Rq {
             boolean isUserOwner = Objects.equals(targetEntity.getOwner().getId(), this.accountPrincipal.getId());
             boolean isAdmin = this.accountPrincipal.isAdmin();
             
-            if(!isUserOwner || !isAdmin){
-                throw new AccessDeniedException("접근권한이 없습니다.");
+            if(!isUserOwner){
+                if(!isAdmin){
+                    throw new AccessDeniedException("접근권한이 없습니다.");
+                }
             }
             
         } else {

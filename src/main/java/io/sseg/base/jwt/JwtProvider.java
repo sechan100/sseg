@@ -1,6 +1,7 @@
 package io.sseg.base.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.sseg.base.constants.JwtProperties;
@@ -44,10 +45,20 @@ public class JwtProvider {
         return getClaims(token).getSubject();
     }
     
+    /**
+     * 토큰의 유효성을 검사합니다. 
+     * 토큰이 만료됐을 경우에는 ExpiredJwtException 예외가 발생, 해당 예외는 ExceptionController에서 처리된다.
+     * */
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token);
             return true;
+            
+        // 토큰 만료시 예외를 받아서 다시 던짐
+        } catch (ExpiredJwtException e) {
+            throw e;
+        
+        // 그 외의 예외는 false 반환
         } catch (Exception e) {
             return false;
         }

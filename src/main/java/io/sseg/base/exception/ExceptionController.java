@@ -1,6 +1,8 @@
 package io.sseg.base.exception;
 
-import org.springframework.context.support.DefaultMessageSourceResolvable;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.sseg.base.http.ApiResponse;
+import io.sseg.base.http.SsegApiResponseStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,7 +14,7 @@ import java.util.stream.Collectors;
 @RestControllerAdvice()
 public class ExceptionController {
     
-    // springboot-starter-validation exception
+    // springboot-starter-validation의 @Valid 유효성 검사 실패 예외
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<String>> handleValidationErrors(MethodArgumentNotValidException ex) {
         

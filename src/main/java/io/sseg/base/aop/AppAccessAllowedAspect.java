@@ -2,6 +2,7 @@ package io.sseg.base.aop;
 
 import io.sseg.base.request.Rq;
 import io.sseg.boundedcontext.application.entity.Application;
+import io.sseg.boundedcontext.application.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -19,6 +20,7 @@ import java.lang.reflect.Parameter;
 public class AppAccessAllowedAspect {
     
     private final Rq rq;
+    private final ApplicationService applicationService;
     
     @Pointcut("execution(* io.sseg.boundedcontext.application.controller.*.*(..))")
     public void allControllerMethodOfApplicationDomain() {}
@@ -35,14 +37,13 @@ public class AppAccessAllowedAspect {
             
             PathVariable pathVariable = parameter.getAnnotation(PathVariable.class);
             
-            if (pathVariable != null && "appId".equals(parameter.getName())) {
+            if (pathVariable != null) {
                 
                 Object[] args = joinPoint.getArgs();
-                
-                for (int i = 0; i < parameters.length; i++) {
-                    String appId = (String) args[i];
-                    rq.isAccessAllowed(appId, "appId", Application.class);
-                }
+            
+                String appId = (String) args[0];
+                Long applciationId = applicationService.findIdByAppId(appId);
+                rq.isAccessAllowed(applciationId, Application.class);
                 
             }
         }

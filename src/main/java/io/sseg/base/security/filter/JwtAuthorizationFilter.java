@@ -1,5 +1,9 @@
 package io.sseg.base.security.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.sseg.base.http.ApiResponse;
+import io.sseg.base.http.SsegApiResponseStatus;
 import io.sseg.base.jwt.JwtProvider;
 import io.sseg.base.request.Rq;
 import io.sseg.boundedcontext.jwt.model.JwtTokenDto;
@@ -34,8 +38,17 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String token = header.replace("Bearer ", "");
         
         // token validation
-        if(!jwtProvider.validateToken(token)){
-            filterChain.doFilter(request, response);
+        try {
+            if(!jwtProvider.validateToken(token)){
+                filterChain.doFilter(request, response);
+                return;
+            }
+        } catch(ExpiredJwtException e) {
+            ObjectMapper jsonMapper = new ObjectMapper();
+            
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write(jsonMapper.writeValueAsString(new ApiResponse<>(null, SsegApiResponseStatus.TOKEN_EXPIRED, SsegApiResponseStatus.TOKEN_EXPIRED.detail)));
             return;
         }
         

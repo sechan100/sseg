@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -154,5 +153,9 @@ public class ApplicationService {
             } catch (Exception e) {
                 return false;
             }
+    }
+    
+    public Long findIdByAppId(String appId) {
+        return applicationRepository.findByAppId(appId).getId();
     }
 }
