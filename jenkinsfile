@@ -23,7 +23,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    docker.build('sseg-app')
+                    docker.build('sseg-app:latest')
                 }
             }
         }
