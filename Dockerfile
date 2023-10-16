@@ -2,7 +2,7 @@ FROM openjdk:17
 
 WORKDIR /app
 
-EXPOSE 8080
+EXPOSE 80
 
 ARG JAR_FILE=sseg-1.0.jar
 
