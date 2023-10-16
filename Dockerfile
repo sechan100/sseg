@@ -2,10 +2,8 @@ FROM openjdk:17
 
 WORKDIR /app
 
+COPY build/libs/sseg-1.0.jar /app/sseg.jar
+
 EXPOSE 80
 
-ARG JAR_FILE=sseg-1.0.jar
-
-COPY build/libs/${JAR_FILE} /app/
-
-CMD sh -c 'java -jar /app/${JAR_FILE} --spring.profiles.active=dev'
+CMD ["java", "-jar", "/app/sseg.jar", "--spring.profiles.active=dev"]

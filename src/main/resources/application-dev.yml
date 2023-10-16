@@ -19,7 +19,7 @@ spring:
 
   datasource:
     username: root
-    password:
+    password: dlqhfka
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://mysql:3306/sseg
 

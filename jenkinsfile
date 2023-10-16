@@ -24,7 +24,6 @@ pipeline {
             steps {
                 script {
                     docker.build('sseg-app')
-                    docker.image('sseg-app').push()
                 }
             }
         }
