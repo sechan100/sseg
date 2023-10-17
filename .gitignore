@@ -41,7 +41,6 @@ out/
 src/main/resources/application-prod.yml
 src/main/resources/application-secret.yml
 .gitsecret/keys/random_seed
-/.gitsecret/paths/mapping.cfg
 /.gitsecret/keys/pubring.kbx
 /.gitsecret/keys/trustdb.gpg
 /src/main/resources/gpg-ownertrust.txt
