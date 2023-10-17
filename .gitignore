@@ -42,3 +42,6 @@ src/main/resources/application-prod.yml
 src/main/resources/application-secret.yml
 .gitsecret/keys/random_seed
 !*.secret
+/.gitsecret/paths/mapping.cfg
+/.gitsecret/keys/pubring.kbx
+/.gitsecret/keys/trustdb.gpg
