@@ -4,24 +4,24 @@ server:
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: local
 
   thymeleaf:
-    cache: false
+    cache: true
     mode: HTML
     encoding: UTF-8
     prefix: classpath:templates
     suffix: .html
 
   redis:
-    host: localhost
+    host: redis
     port: 6379
 
   datasource:
     username: root
-    password:
+    password: dlqhfka
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/sseg
+    url: jdbc:mysql://mysql:3306/sseg
 
   jpa:
     hibernate:
